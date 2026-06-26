@@ -115,9 +115,24 @@
     </div>
 
     <div class="login-tabs">
-      <button class="login-tab ativo" onclick="trocarAba('entrar')">Entrar</button>
-      <button class="login-tab" onclick="trocarAba('cadastrar')">Cadastrar</button>
-    </div>
+  <button class="login-tab ativo" onclick="trocarAba('entrar')">Entrar</button>
+  <button class="login-tab" onclick="trocarAba('cadastrar')">Cadastrar</button>
+</div>
+
+<!-- RECUPERAR SENHA -->
+<div class="login-form" id="form-recuperar">
+  <div class="erro-msg" id="erro-recuperar"></div>
+  <div class="sucesso-msg" id="sucesso-recuperar"></div>
+  <p style="font-size:0.9rem;color:var(--texto-suave);margin-bottom:1rem;">Digite seu e-mail e enviaremos um link para redefinir sua senha.</p>
+  <div class="form-group">
+    <label for="rec-email">E-mail</label>
+    <input type="email" id="rec-email" placeholder="seu@email.com" required>
+  </div>
+  <button class="form-submit" onclick="recuperarSenha()">Enviar link</button>
+  <div class="login-footer">
+    <a href="#" onclick="trocarAba('entrar')">Voltar para o login</a>
+  </div>
+</div>
 
     <!-- ENTRAR -->
     <div class="login-form ativo" id="form-entrar">
@@ -131,9 +146,9 @@
         <input type="password" id="login-senha" placeholder="Sua senha" required>
       </div>
       <button class="form-submit" onclick="entrar()">Entrar</button>
-      <div class="login-footer">
-        Não tem conta? <a href="#" onclick="trocarAba('cadastrar')">Cadastre-se</a>
-      </div>
+<div class="login-footer">
+  <a href="#" onclick="trocarAba('recuperar')">Esqueci minha senha</a> &nbsp;|&nbsp; Não tem conta? <a href="#" onclick="trocarAba('cadastrar')">Cadastre-se</a>
+</div>
     </div>
 
     <!-- CADASTRAR -->
@@ -238,6 +253,24 @@
     sucessoEl.textContent = 'Conta criada! Verifique seu e-mail para confirmar o cadastro.'
     sucessoEl.style.display = 'block'
   }
+  window.recuperarSenha = async function() {
+  const email = document.getElementById('rec-email').value
+  const erroEl = document.getElementById('erro-recuperar')
+  const sucessoEl = document.getElementById('sucesso-recuperar')
+  erroEl.style.display = 'none'
+  sucessoEl.style.display = 'none'
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email)
+
+  if (error) {
+    erroEl.textContent = 'Erro ao enviar e-mail: ' + error.message
+    erroEl.style.display = 'block'
+    return
+  }
+
+  sucessoEl.textContent = 'Link enviado! Verifique seu e-mail.'
+  sucessoEl.style.display = 'block'
+}
 </script>
 
 </body>
