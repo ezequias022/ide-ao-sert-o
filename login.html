@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar — Missão Ide ao Sertão</title>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="logoide.ico.ico">
+  <style>
+    .login-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background:
+        linear-gradient(to bottom, rgba(245,194,0,0.08) 0%, rgba(245,194,0,0.15) 100%),
+        var(--osso);
+    }
+
+    .login-card {
+      background: var(--branco);
+      border-radius: 10px;
+      border: 2px solid var(--amarelo);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .login-logo {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .login-logo img {
+      height: 64px;
+      object-fit: contain;
+    }
+
+    .login-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin-bottom: 2rem;
+      border: 2px solid var(--amarelo);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .login-tab {
+      padding: 0.7rem;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--branco);
+      color: var(--texto-suave);
+      border: none;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .login-tab.ativo {
+      background: var(--amarelo);
+      color: var(--marrom);
+    }
+
+    .login-form { display: none; }
+    .login-form.ativo { display: block; }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--texto-suave);
+    }
+
+    .login-footer a {
+      color: var(--terracota);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .erro-msg {
+      background: #fff0f0;
+      border: 1px solid #ffcccc;
+      color: #cc0000;
+      padding: 0.7rem 1rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .sucesso-msg {
+      background: #fffbea;
+      border: 1px solid var(--amarelo);
+      color: var(--marrom);
+      padding: 0.7rem 1rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-logo">
+      <a href="index.html">
+        <img src="logo nova do ide.jpg" alt="Logo Missão Ide ao Sertão">
+      </a>
+    </div>
+
+    <div class="login-tabs">
+      <button class="login-tab ativo" onclick="trocarAba('entrar')">Entrar</button>
+      <button class="login-tab" onclick="trocarAba('cadastrar')">Cadastrar</button>
+    </div>
+
+    <!-- ENTRAR -->
+    <div class="login-form ativo" id="form-entrar">
+      <div class="erro-msg" id="erro-entrar"></div>
+      <div class="form-group">
+        <label for="login-email">E-mail</label>
+        <input type="email" id="login-email" placeholder="seu@email.com" required>
+      </div>
+      <div class="form-group">
+        <label for="login-senha">Senha</label>
+        <input type="password" id="login-senha" placeholder="Sua senha" required>
+      </div>
+      <button class="form-submit" onclick="entrar()">Entrar</button>
+      <div class="login-footer">
+        Não tem conta? <a href="#" onclick="trocarAba('cadastrar')">Cadastre-se</a>
+      </div>
+    </div>
+
+    <!-- CADASTRAR -->
+    <div class="login-form" id="form-cadastrar">
+      <div class="erro-msg" id="erro-cadastrar"></div>
+      <div class="sucesso-msg" id="sucesso-cadastrar"></div>
+      <div class="form-group">
+        <label for="cad-nome">Nome completo</label>
+        <input type="text" id="cad-nome" placeholder="Seu nome completo" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cad-telefone">WhatsApp</label>
+          <input type="tel" id="cad-telefone" placeholder="(87) 99999-0000">
+        </div>
+        <div class="form-group">
+          <label for="cad-cidade">Cidade</label>
+          <input type="text" id="cad-cidade" placeholder="Petrolina – PE">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="cad-email">E-mail</label>
+        <input type="email" id="cad-email" placeholder="seu@email.com" required>
+      </div>
+      <div class="form-group">
+        <label for="cad-senha">Senha</label>
+        <input type="password" id="cad-senha" placeholder="Mínimo 6 caracteres" required>
+      </div>
+      <button class="form-submit" onclick="cadastrar()">Criar conta</button>
+      <div class="login-footer">
+        Já tem conta? <a href="#" onclick="trocarAba('entrar')">Entrar</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+  import { supabase } from './js/supabase.js'
+
+  window.trocarAba = function(aba) {
+    document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('ativo'))
+    document.querySelectorAll('.login-form').forEach(f => f.classList.remove('ativo'))
+    document.getElementById('form-' + aba).classList.add('ativo')
+    const tabs = document.querySelectorAll('.login-tab')
+    if (aba === 'entrar') tabs[0].classList.add('ativo')
+    else tabs[1].classList.add('ativo')
+  }
+
+  window.entrar = async function() {
+    const email = document.getElementById('login-email').value
+    const senha = document.getElementById('login-senha').value
+    const erroEl = document.getElementById('erro-entrar')
+    erroEl.style.display = 'none'
+
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha })
+
+    if (error) {
+      erroEl.textContent = 'E-mail ou senha incorretos.'
+      erroEl.style.display = 'block'
+      return
+    }
+
+    // Verificar se é admin
+    const { data: perfil } = await supabase
+      .from('perfis')
+      .select('is_admin')
+      .eq('id', data.user.id)
+      .single()
+
+    if (perfil?.is_admin) {
+      window.location.href = 'admin.html'
+    } else {
+      window.location.href = 'painel.html'
+    }
+  }
+
+  window.cadastrar = async function() {
+    const nome = document.getElementById('cad-nome').value
+    const email = document.getElementById('cad-email').value
+    const senha = document.getElementById('cad-senha').value
+    const telefone = document.getElementById('cad-telefone').value
+    const cidade = document.getElementById('cad-cidade').value
+    const erroEl = document.getElementById('erro-cadastrar')
+    const sucessoEl = document.getElementById('sucesso-cadastrar')
+    erroEl.style.display = 'none'
+    sucessoEl.style.display = 'none'
+
+    const { data, error } = await supabase.auth.signUp({ email, password: senha })
+
+    if (error) {
+      erroEl.textContent = 'Erro ao criar conta: ' + error.message
+      erroEl.style.display = 'block'
+      return
+    }
+
+    await supabase.from('perfis').insert({
+      id: data.user.id,
+      nome, email, telefone, cidade
+    })
+
+    sucessoEl.textContent = 'Conta criada! Verifique seu e-mail para confirmar o cadastro.'
+    sucessoEl.style.display = 'block'
+  }
+</script>
+
+</body>
+</html>

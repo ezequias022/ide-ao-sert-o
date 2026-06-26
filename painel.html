@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Painel — Missão Ide ao Sertão</title>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="logoide.ico.ico">
+  <style>
+    .painel-page { min-height: 100vh; background: var(--osso); padding-top: 64px; }
+    .painel-header { background: var(--branco); border-bottom: 2px solid var(--amarelo); padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+    .painel-header-logo img { height: 40px; }
+    .painel-header-user { display: flex; align-items: center; gap: 1rem; font-size: 0.9rem; color: var(--texto-suave); }
+    .btn-sair { background: none; border: 1.5px solid var(--amarelo); color: var(--marrom); padding: 0.4rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: background 0.2s; }
+    .btn-sair:hover { background: var(--amarelo-suave); }
+    .painel-body { max-width: 900px; margin: 0 auto; padding: 2.5rem 2rem; }
+    .painel-boas-vindas { margin-bottom: 2.5rem; }
+    .painel-boas-vindas h1 { font-family: 'EB Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--texto); }
+    .painel-boas-vindas p { color: var(--texto-suave); }
+    .painel-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-bottom: 2.5rem; }
+    .painel-card { background: var(--branco); border-radius: 8px; border: 2px solid var(--amarelo); padding: 1.5rem; text-align: center; }
+    .painel-card-num { font-family: 'EB Garamond', serif; font-size: 2.5rem; font-weight: 700; color: var(--terracota); }
+    .painel-card-label { font-size: 0.85rem; color: var(--texto-suave); margin-top: 0.3rem; }
+    .painel-secao { margin-bottom: 2.5rem; }
+    .painel-secao h2 { font-family: 'EB Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--texto); margin-bottom: 1.2rem; border-bottom: 2px solid var(--amarelo); padding-bottom: 0.5rem; }
+    .inscricao-item { background: var(--branco); border-radius: 8px; border: 1px solid rgba(245,194,0,0.4); padding: 1.2rem 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
+    .inscricao-info h4 { font-family: 'EB Garamond', serif; font-size: 1.1rem; font-weight: 700; color: var(--texto); margin-bottom: 0.2rem; }
+    .inscricao-info p { font-size: 0.85rem; color: var(--texto-suave); }
+    .status-badge { padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.78rem; font-weight: 600; }
+    .status-pendente { background: #fff8d6; color: #8a6d00; border: 1px solid var(--amarelo); }
+    .status-aprovado { background: #e6f4ea; color: #2d6a2d; border: 1px solid #a8d5a8; }
+    .status-rejeitado { background: #fff0f0; color: #cc0000; border: 1px solid #ffcccc; }
+    .certificado-item { background: var(--branco); border-radius: 8px; border: 2px solid var(--amarelo); padding: 1.2rem 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
+    .certificado-info h4 { font-family: 'EB Garamond', serif; font-size: 1.1rem; font-weight: 700; color: var(--texto); margin-bottom: 0.2rem; }
+    .certificado-info p { font-size: 0.85rem; color: var(--texto-suave); }
+    .btn-certificado { background: var(--amarelo); color: var(--marrom); border: none; padding: 0.5rem 1.2rem; border-radius: 4px; font-weight: 700; font-size: 0.85rem; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+    .btn-certificado:hover { background: var(--amarelo-escuro); }
+    .vazio { text-align: center; padding: 2rem; color: var(--texto-suave); font-size: 0.95rem; background: var(--branco); border-radius: 8px; border: 1px dashed rgba(245,194,0,0.5); }
+    @media (max-width: 600px) { .painel-cards { grid-template-columns: 1fr; } .inscricao-item, .certificado-item { flex-direction: column; gap: 1rem; align-items: flex-start; } }
+  </style>
+</head>
+<body>
+
+<div class="painel-page">
+  <div class="painel-header">
+    <a href="index.html" class="painel-header-logo">
+      <img src="logo nova do ide.jpg" alt="Logo">
+    </a>
+    <div class="painel-header-user">
+      <span id="header-nome">Carregando...</span>
+      <button class="btn-sair" onclick="sair()">Sair</button>
+    </div>
+  </div>
+
+  <div class="painel-body">
+    <div class="painel-boas-vindas">
+      <h1>Olá, <span id="nome-usuario">missionário</span>! 👋</h1>
+      <p>Bem-vindo ao seu painel. Aqui você acompanha suas inscrições e certificados.</p>
+    </div>
+
+    <div class="painel-cards">
+      <div class="painel-card">
+        <div class="painel-card-num" id="total-inscricoes">0</div>
+        <div class="painel-card-label">Inscrições realizadas</div>
+      </div>
+      <div class="painel-card">
+        <div class="painel-card-num" id="total-aprovadas">0</div>
+        <div class="painel-card-label">Participações confirmadas</div>
+      </div>
+      <div class="painel-card">
+        <div class="painel-card-num" id="total-certificados">0</div>
+        <div class="painel-card-label">Certificados disponíveis</div>
+      </div>
+    </div>
+
+    <div class="painel-secao">
+      <h2>Minhas inscrições</h2>
+      <div id="lista-inscricoes"><div class="vazio">Carregando...</div></div>
+    </div>
+
+    <div class="painel-secao">
+      <h2>Meus certificados</h2>
+      <div id="lista-certificados"><div class="vazio">Carregando...</div></div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { supabase } from './js/supabase.js'
+
+  async function init() {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) { window.location.href = 'login.html'; return }
+
+    const { data: perfil } = await supabase.from('perfis').select('*').eq('id', user.id).single()
+    if (perfil) {
+      document.getElementById('nome-usuario').textContent = perfil.nome.split(' ')[0]
+      document.getElementById('header-nome').textContent = perfil.nome.split(' ')[0]
+    }
+
+    // Inscrições
+    const { data: inscricoes } = await supabase
+      .from('inscricoes')
+      .select('*, eventos(nome, data_inicio, data_fim, local)')
+      .eq('usuario_id', user.id)
+      .order('created_at', { ascending: false })
+
+    document.getElementById('total-inscricoes').textContent = inscricoes?.length || 0
+    const aprovadas = inscricoes?.filter(i => i.status === 'aprovado') || []
+    document.getElementById('total-aprovadas').textContent = aprovadas.length
+
+    const listaInscricoes = document.getElementById('lista-inscricoes')
+    if (!inscricoes || inscricoes.length === 0) {
+      listaInscricoes.innerHTML = '<div class="vazio">Você ainda não tem inscrições. <a href="index.html#participe">Inscreva-se em um evento!</a></div>'
+    } else {
+      listaInscricoes.innerHTML = inscricoes.map(i => {
+        const statusClass = `status-${i.status}`
+        const statusTexto = i.status === 'pendente' ? 'Pendente' : i.status === 'aprovado' ? 'Aprovado' : 'Não aprovado'
+        const data = i.eventos ? new Date(i.eventos.data_inicio + 'T00:00:00').toLocaleDateString('pt-BR') : '--'
+        return `
+          <div class="inscricao-item">
+            <div class="inscricao-info">
+              <h4>${i.eventos?.nome || 'Evento'}</h4>
+              <p>${i.eventos?.local || ''} • ${data}</p>
+            </div>
+            <span class="status-badge ${statusClass}">${statusTexto}</span>
+          </div>`
+      }).join('')
+    }
+
+    // Certificados
+    const { data: certificados } = await supabase
+      .from('certificados')
+      .select('*, eventos(nome, data_inicio)')
+      .eq('usuario_id', user.id)
+
+    document.getElementById('total-certificados').textContent = certificados?.length || 0
+
+    const listaCertificados = document.getElementById('lista-certificados')
+    if (!certificados || certificados.length === 0) {
+      listaCertificados.innerHTML = '<div class="vazio">Nenhum certificado disponível ainda. Os certificados são emitidos após a confirmação de participação.</div>'
+    } else {
+      listaCertificados.innerHTML = certificados.map(c => {
+        const data = c.eventos ? new Date(c.eventos.data_inicio + 'T00:00:00').toLocaleDateString('pt-BR') : '--'
+        return `
+          <div class="certificado-item">
+            <div class="certificado-info">
+              <h4>${c.eventos?.nome || 'Evento'}</h4>
+              <p>Emitido em ${new Date(c.emitido_em).toLocaleDateString('pt-BR')}</p>
+            </div>
+            <a href="${c.url_pdf}" target="_blank" class="btn-certificado">Baixar certificado</a>
+          </div>`
+      }).join('')
+    }
+  }
+
+  window.sair = async function() {
+    await supabase.auth.signOut()
+    window.location.href = 'index.html'
+  }
+
+  init()
+</script>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Missão Ide ao Sertão</title>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="logoide.ico.ico">
+  <style>
+    .admin-page { min-height: 100vh; background: var(--osso); }
+    .admin-header { background: var(--marrom); border-bottom: 2px solid var(--amarelo); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+    .admin-header img { height: 36px; }
+    .admin-header-title { color: var(--amarelo); font-family: 'EB Garamond', serif; font-size: 1.2rem; font-weight: 700; }
+    .admin-body { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem; }
+    .admin-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
+    .admin-card { background: var(--branco); border-radius: 8px; border: 2px solid var(--amarelo); padding: 1.2rem; text-align: center; }
+    .admin-card-num { font-family: 'EB Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--terracota); }
+    .admin-card-label { font-size: 0.8rem; color: var(--texto-suave); margin-top: 0.2rem; }
+    .admin-secao { margin-bottom: 2.5rem; }
+    .admin-secao-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; border-bottom: 2px solid var(--amarelo); padding-bottom: 0.5rem; }
+    .admin-secao-header h2 { font-family: 'EB Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--texto); }
+    .tabela { width: 100%; border-collapse: collapse; background: var(--branco); border-radius: 8px; overflow: hidden; border: 1px solid rgba(245,194,0,0.3); }
+    .tabela th { background: var(--marrom); color: var(--amarelo); padding: 0.8rem 1rem; text-align: left; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+    .tabela td { padding: 0.9rem 1rem; font-size: 0.88rem; color: var(--texto-suave); border-bottom: 1px solid rgba(245,194,0,0.2); }
+    .tabela tr:last-child td { border-bottom: none; }
+    .tabela tr:hover td { background: var(--amarelo-suave); }
+    .status-badge { padding: 0.25rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+    .status-pendente { background: #fff8d6; color: #8a6d00; border: 1px solid var(--amarelo); }
+    .status-aprovado { background: #e6f4ea; color: #2d6a2d; border: 1px solid #a8d5a8; }
+    .status-rejeitado { background: #fff0f0; color: #cc0000; border: 1px solid #ffcccc; }
+    .btn-aprovar { background: #e6f4ea; color: #2d6a2d; border: 1px solid #a8d5a8; padding: 0.3rem 0.7rem; border-radius: 4px; font-size: 0.78rem; font-weight: 600; cursor: pointer; margin-right: 0.3rem; transition: background 0.2s; }
+    .btn-aprovar:hover { background: #c8e6c8; }
+    .btn-rejeitar { background: #fff0f0; color: #cc0000; border: 1px solid #ffcccc; padding: 0.3rem 0.7rem; border-radius: 4px; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .btn-rejeitar:hover { background: #ffd6d6; }
+    .btn-certificado-gerar { background: var(--amarelo); color: var(--marrom); border: none; padding: 0.3rem 0.7rem; border-radius: 4px; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+    .btn-certificado-gerar:hover { background: var(--amarelo-escuro); }
+    .form-evento { background: var(--branco); border-radius: 8px; border: 2px solid var(--amarelo); padding: 1.5rem; }
+    .form-evento .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .vazio { text-align: center; padding: 2rem; color: var(--texto-suave); }
+    @media (max-width: 768px) { .admin-cards { grid-template-columns: 1fr 1fr; } .tabela { font-size: 0.8rem; } .tabela th, .tabela td { padding: 0.6rem 0.5rem; } }
+  </style>
+</head>
+<body>
+
+<div class="admin-page">
+  <div class="admin-header">
+    <a href="index.html"><img src="logo nova do ide.jpg" alt="Logo"></a>
+    <span class="admin-header-title">Painel Administrativo</span>
+    <button class="btn-sair" onclick="sair()" style="background:none;border:1.5px solid var(--amarelo);color:var(--amarelo);padding:0.4rem 1rem;border-radius:4px;cursor:pointer;font-size:0.85rem;font-weight:600;">Sair</button>
+  </div>
+
+  <div class="admin-body">
+
+    <div class="admin-cards">
+      <div class="admin-card">
+        <div class="admin-card-num" id="total-inscritos">0</div>
+        <div class="admin-card-label">Total de inscritos</div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-num" id="total-pendentes">0</div>
+        <div class="admin-card-label">Pendentes</div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-num" id="total-aprovados">0</div>
+        <div class="admin-card-label">Aprovados</div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-num" id="total-eventos">0</div>
+        <div class="admin-card-label">Eventos cadastrados</div>
+      </div>
+    </div>
+
+    <!-- INSCRIÇÕES -->
+    <div class="admin-secao">
+      <div class="admin-secao-header">
+        <h2>Inscrições</h2>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>WhatsApp</th>
+              <th>Cidade</th>
+              <th>Evento</th>
+              <th>Habilidade</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-inscricoes">
+            <tr><td colspan="8" class="vazio">Carregando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EVENTOS -->
+    <div class="admin-secao">
+      <div class="admin-secao-header">
+        <h2>Eventos</h2>
+      </div>
+      <div class="form-evento" style="margin-bottom:1.5rem;">
+        <p class="section-label" style="margin-bottom:1rem;">Cadastrar novo evento</p>
+        <div class="form-group">
+          <label>Nome do evento</label>
+          <input type="text" id="ev-nome" placeholder="Ex: Missão Sertão 2026">
+        </div>
+        <div class="form-group">
+          <label>Descrição</label>
+          <input type="text" id="ev-descricao" placeholder="Breve descrição do evento">
+        </div>
+        <div class="form-group">
+          <label>Local</label>
+          <input type="text" id="ev-local" placeholder="Ex: Gameleira, Jaguarari – BA">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Data de início</label>
+            <input type="date" id="ev-inicio">
+          </div>
+          <div class="form-group">
+            <label>Data de fim</label>
+            <input type="date" id="ev-fim">
+          </div>
+        </div>
+        <button class="form-submit" style="width:auto;padding:0.7rem 2rem;" onclick="cadastrarEvento()">Cadastrar evento</button>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Local</th>
+              <th>Data início</th>
+              <th>Data fim</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-eventos">
+            <tr><td colspan="6" class="vazio">Carregando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+  import { supabase } from './js/supabase.js'
+
+  async function init() {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) { window.location.href = 'login.html'; return }
+
+    const { data: perfil } = await supabase.from('perfis').select('is_admin').eq('id', user.id).single()
+    if (!perfil?.is_admin) { window.location.href = 'painel.html'; return }
+
+    carregarInscricoes()
+    carregarEventos()
+  }
+
+  async function carregarInscricoes() {
+    const { data } = await supabase
+      .from('inscricoes')
+      .select('*, perfis(nome, email, telefone, cidade), eventos(nome)')
+      .order('created_at', { ascending: false })
+
+    const total = data?.length || 0
+    const pendentes = data?.filter(i => i.status === 'pendente').length || 0
+    const aprovados = data?.filter(i => i.status === 'aprovado').length || 0
+
+    document.getElementById('total-inscritos').textContent = total
+    document.getElementById('total-pendentes').textContent = pendentes
+    document.getElementById('total-aprovados').textContent = aprovados
+
+    const tbody = document.getElementById('tabela-inscricoes')
+    if (!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" class="vazio">Nenhuma inscrição ainda.</td></tr>'
+      return
+    }
+
+    tbody.innerHTML = data.map(i => `
+      <tr>
+        <td>${i.perfis?.nome || '--'}</td>
+        <td>${i.perfis?.email || '--'}</td>
+        <td>${i.perfis?.telefone || '--'}</td>
+        <td>${i.perfis?.cidade || '--'}</td>
+        <td>${i.eventos?.nome || '--'}</td>
+        <td>${i.habilidade || '--'}</td>
+        <td><span class="status-badge status-${i.status}">${i.status}</span></td>
+        <td>
+          ${i.status === 'pendente' ? `
+            <button class="btn-aprovar" onclick="atualizarStatus('${i.id}', 'aprovado')">Aprovar</button>
+            <button class="btn-rejeitar" onclick="atualizarStatus('${i.id}', 'rejeitado')">Rejeitar</button>
+          ` : ''}
+          ${i.status === 'aprovado' ? `
+            <button class="btn-certificado-gerar" onclick="gerarCertificado('${i.id}', '${i.usuario_id}', '${i.evento_id}')">Emitir cert.</button>
+          ` : ''}
+        </td>
+      </tr>`).join('')
+  }
+
+  async function carregarEventos() {
+    const { data } = await supabase.from('eventos').select('*').order('data_inicio', { ascending: false })
+    document.getElementById('total-eventos').textContent = data?.length || 0
+
+    const tbody = document.getElementById('tabela-eventos')
+    if (!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" class="vazio">Nenhum evento cadastrado.</td></tr>'
+      return
+    }
+
+    tbody.innerHTML = data.map(e => `
+      <tr>
+        <td>${e.nome}</td>
+        <td>${e.local}</td>
+        <td>${new Date(e.data_inicio + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
+        <td>${new Date(e.data_fim + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
+        <td><span class="status-badge ${e.ativo ? 'status-aprovado' : 'status-rejeitado'}">${e.ativo ? 'Ativo' : 'Encerrado'}</span></td>
+        <td>
+          <button class="btn-rejeitar" onclick="encerrarEvento('${e.id}', ${e.ativo})">${e.ativo ? 'Encerrar' : 'Reativar'}</button>
+        </td>
+      </tr>`).join('')
+  }
+
+  window.atualizarStatus = async function(id, status) {
+    await supabase.from('inscricoes').update({ status }).eq('id', id)
+    carregarInscricoes()
+  }
+
+  window.gerarCertificado = async function(inscricaoId, usuarioId, eventoId) {
+    const { data: jaExiste } = await supabase
+      .from('certificados')
+      .select('id')
+      .eq('usuario_id', usuarioId)
+      .eq('evento_id', eventoId)
+      .single()
+
+    if (jaExiste) { alert('Certificado já emitido para este participante.'); return }
+
+    await supabase.from('certificados').insert({
+      usuario_id: usuarioId,
+      evento_id: eventoId,
+      url_pdf: '#',
+      emitido_em: new Date().toISOString()
+    })
+
+    alert('Certificado emitido com sucesso!')
+    carregarInscricoes()
+  }
+
+  window.cadastrarEvento = async function() {
+    const nome = document.getElementById('ev-nome').value
+    const descricao = document.getElementById('ev-descricao').value
+    const local = document.getElementById('ev-local').value
+    const data_inicio = document.getElementById('ev-inicio').value
+    const data_fim = document.getElementById('ev-fim').value
+
+    if (!nome || !local || !data_inicio || !data_fim) { alert('Preencha todos os campos obrigatórios.'); return }
+
+    await supabase.from('eventos').insert({ nome, descricao, local, data_inicio, data_fim, ativo: true })
+    alert('Evento cadastrado!')
+    carregarEventos()
+  }
+
+  window.encerrarEvento = async function(id, ativo) {
+    await supabase.from('eventos').update({ ativo: !ativo }).eq('id', id)
+    carregarEventos()
+  }
+
+  window.sair = async function() {
+    await supabase.auth.signOut()
+    window.location.href = 'index.html'
+  }
+
+  init()
+</script>
+</body>
+</html>

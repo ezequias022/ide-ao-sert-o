@@ -1,146 +1,251 @@
-    <!DOCTYPE html>
-    <html lang="pt-BR">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Missão Ide ao Sertão</title>
-        <link rel="icon" href="logoide.ico.ico" type="image/x-icon">
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f9e79f;
-                color: #5a3d1c;
-                margin: 0;
-                padding: 0;
-                text-align: center;
-            }
-            header {
-                background-color: #c79a3a;
-                color: white;
-                padding: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            header img {
-                height: 100px;
-                margin-left: 15px;
-            }
-            section {
-                padding: 20px;
-            }
-            .container {
-                width: 90%;
-                max-width: 800px;
-                margin: auto;
-            }
-            img {
-                max-width: 100%;
-                border-radius: 10px;
-            }
-            .btn {
-                display: inline-block;
-                padding: 12px 22px;
-                background-color: #c79a3a;
-                color: white;
-                text-decoration: none;
-                border-radius: 5px;
-                margin-top: 10px;
-                border: 2px solid #a97f2f;
-                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-            }
-            .btn:hover {
-                background-color: #a97f2f;
-            }
-            .gallery {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 10px;
-                margin-top: 20px;
-            }
-            .gallery img {
-                width: 30%;
-                max-width: 200px;
-                height: auto;
-                border-radius: 8px;
-            }
-            footer {
-                background-color: #c79a3a;
-                color: white;
-                padding: 10px;
-                margin-top: 20px;
-            }
-        </style>
-    </head>
-    <body>
-        <header>
-            <h1>Missão Ide ao Sertão</h1>
-            <img src="logo nova do ide.jpg" alt="Logo Missão Ide ao Sertão">
-        </header>
-        
-        <section class="container">
-            <h2>Sobre a Missão</h2>
-            <p>A <strong>Missão Ide ao Sertão</strong> nasceu do chamado de Cristo, que nos deu a ordenança: "Ide e pregai o Evangelho a toda criatura". Nosso propósito é responder a esse mandamento, levando a mensagem de salvação de Jesus às comunidades do sertão nordestino. Acreditamos que, através do poder transformador do Evangelho, vidas são renovadas, corações são restaurados e a verdadeira esperança é encontrada em Cristo. Movidos pelo amor de Deus, buscamos espalhar Sua luz em cada canto desse sertão, proclamando que em Jesus há salvação, cura e uma nova vida para todos..</p>
-            <img src="grupo ide.jpg" alt="Equipe da Missão no Sertão">
-        </section>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Missão Ide ao Sertão</title>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="logoide.ico.ico">
+</head>
+<body>
 
-        <section class="container">
-            <h2>Próximo Impacto Evangelístico</h2>
-            <p>Nos dias <strong>07 e 08 de Março de 2026</strong>, realizaremos um impacto evangelístico nos povoados:</p>
-            <ul>
-                <li><strong>Gameleira</strong> - Município de Jaguarari, BA</li>
-                <li><strong>Jacunã</strong> - Município de Jaguarari, BA</li>
-            </ul>
-            <p>Será um tempo de louvor, oração e evangelização para levar o amor de Cristo às comunidades sertanejas.</p>
-            <img src="impactojaguari.jpeg" alt="Imagem do Impacto Evangelístico">
-        </section>
+<!-- NAV -->
+<nav>
+  <a href="#inicio" class="nav-logo">
+    <img src="logo nova do ide.jpg" alt="Logo Missão Ide ao Sertão">
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#quem-somos">Quem somos</a></li>
+    <li><a href="#proximo-evento">Próximo evento</a></li>
+    <li><a href="#galeria">Galeria</a></li>
+    <li><a href="#participe">Participe</a></li>
+    <li><a href="login.html" class="nav-cta">Entrar</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-        <section class="container">
-            <h2>Faça Parte Dessa Missão</h2>
-            <p>Você sente o chamado para ser instrumento de Deus no sertão? Junte-se a nós nesta jornada de fé e amor ao próximo! Cada missão é uma oportunidade única de impactar vidas e ser resposta às orações de muitos.</p>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeqLxKQ6FWojcSvgmnokTdRtolm_8t5m0hsP2YE-5LeplDMBQ/viewform?usp=sf_link" class="btn" target="_blank">Inscreva-se e Seja Luz</a>
-        </section>
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-inner">
+    <span class="hero-eyebrow">Projeto Missionário</span>
+    <h1>Ide ao <em>Sertão</em><br>e pregai o Evangelho</h1>
+    <p>A Missão Ide ao Sertão nasceu do chamado de Cristo: "Ide e pregai o Evangelho a toda criatura". Respondemos a esse mandamento levando a mensagem de salvação às comunidades do sertão nordestino.</p>
+    <div class="hero-btns">
+      <a href="#participe" class="btn-primary">Quero participar</a>
+      <a href="#quem-somos" class="btn-secondary">Saiba mais</a>
+    </div>
+  </div>
+</section>
 
-        <section class="container">
-            <h2>Galeria de Bênçãos</h2>
-            <p>Confira registros marcantes da nossa missão no sertão. Cada imagem reflete histórias de fé, amor e transformação.</p>
-            <div class="gallery">
-                <img src="278582716_563056794955079_5832141412056432390_n.jpg" alt="Equipe na Missão">
-                <img src="Captura de tela 2025-04-02 193103.png" alt="Registro da Missão">
-                <img src="Captura de tela 2025-04-02 193135.png" alt="Momento de Oração">
-                <img src="Captura de tela 2025-04-02 193425.png" alt="Corte de cabelo solidário">
-                <img src="Captura de tela 2025-04-02 193759.png" alt="Louvor ao ar livre">
-                <img src="Captura de tela 2025-04-02 193502.png" alt="Evangelização nas ruas">
-                 <img src="Captura de tela 2025-04-02 193609.png" alt="">
-                 <img src="Captura de tela 2025-04-02 193441.png" alt="">
-                 <img src="Captura de tela 2025-04-02 193631.png" alt="">
-                 <img src="Captura de tela 2025-04-02 194049.png" alt="">
-                 <img src="Captura de tela 2025-04-02 194236.png" alt="">
-                 <img src="Captura de tela 2025-04-02 193836.png" alt="">
-                 <img src="IMG-20240728-WA0169.jpg" alt="">
-                 <img src="Captura de tela 2025-04-02 194037.png" alt="">
-                 <img src="IMG-20240728-WA0099.jpg" alt="">
+<!-- VERSÍCULO -->
+<div class="versiculo">
+  <blockquote>"Ide por todo o mundo e pregai o Evangelho a toda criatura."</blockquote>
+  <cite>Marcos 16:15</cite>
+</div>
 
+<!-- QUEM SOMOS -->
+<section class="quem-somos" id="quem-somos">
+  <div class="container">
+    <div class="qs-grid">
+      <div class="qs-texto">
+        <p class="section-label">Quem somos</p>
+        <h2 class="section-title">Uma missão nascida do chamado de Cristo</h2>
+        <div class="divider"></div>
+        <p>A Missão Ide ao Sertão nasceu do chamado de Cristo, que nos deu a ordenança: "Ide e pregai o Evangelho a toda criatura". Nosso propósito é responder a esse mandamento, levando a mensagem de salvação de Jesus às comunidades do sertão nordestino.</p>
+        <p>Acreditamos que, através do poder transformador do Evangelho, vidas são renovadas, corações são restaurados e a verdadeira esperança é encontrada em Cristo.</p>
+        <p>Movidos pelo amor de Deus, buscamos espalhar Sua luz em cada canto desse sertão, proclamando que em Jesus há salvação, cura e uma nova vida para todos.</p>
+        <img src="grupo ide.jpg" alt="Equipe da Missão no Sertão" style="width:100%; border-radius:6px; margin-top:1.5rem; border: 2px solid var(--amarelo);">
+      </div>
+      <div class="qs-valores">
+        <p class="section-label">Nossos valores</p>
+        <div class="valor-card">
+          <h4>Fé em ação</h4>
+          <p>Cremos que a fé sem obras é morta. Cada viagem ao sertão é uma expressão viva do que acreditamos.</p>
+        </div>
+        <div class="valor-card">
+          <h4>Serviço humilde</h4>
+          <p>Não vamos ao sertão para ensinar, mas para servir. A missão começa com escuta e presença.</p>
+        </div>
+        <div class="valor-card">
+          <h4>Comunidade e pertencimento</h4>
+          <p>Cada missionário parte como parte de um corpo. Ninguém vai sozinho — e ninguém fica de fora.</p>
+        </div>
+        <div class="valor-card">
+          <h4>Comprometimento com o povo</h4>
+          <p>Construímos laços duradouros com as comunidades que visitamos, voltando sempre que possível.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-                
+<!-- PRÓXIMO EVENTO -->
+<section class="proximo-evento" id="proximo-evento">
+  <div class="container">
+    <p class="section-label">Não perca</p>
+    <h2 class="section-title">Próximo impacto evangelístico</h2>
+    <div class="divider"></div>
+    <div class="evento-destaque">
+      <div class="evento-destaque-info">
+        <h3 id="evento-nome">Carregando...</h3>
+        <div class="evento-detalhe">
+          <div class="evento-detalhe-icon"></div>
+          <span id="evento-data">--</span>
+        </div>
+        <div class="evento-detalhe">
+          <div class="evento-detalhe-icon"></div>
+          <span id="evento-local">--</span>
+        </div>
+        <div class="evento-detalhe">
+          <div class="evento-detalhe-icon"></div>
+          <span id="evento-descricao">--</span>
+        </div>
+        <a href="#participe" class="btn-primary" style="margin-top:1.5rem; display:inline-block;">Inscrever-se</a>
+      </div>
+      <div class="evento-destaque-img">
+        <img src="impactojaguari.jpeg" alt="Próximo evento">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIA -->
+<section class="galeria" id="galeria">
+  <div class="container">
+    <p class="section-label">Momentos que transformam</p>
+    <h2 class="section-title">Galeria de bênçãos</h2>
+    <div class="divider"></div>
+    <div class="galeria-grid">
+      <div class="galeria-item"><img src="278582716_563056794955079_5832141412056432390_n.jpg" alt="Equipe na missão"></div>
+      <div class="galeria-item"><img src="Captura de tela 2025-04-02 193103.png" alt="Registro da missão"></div>
+      <div class="galeria-item"><img src="Captura de tela 2025-04-02 193135.png" alt="Momento de oração"></div>
+      <div class="galeria-item"><img src="Captura de tela 2025-04-02 193425.png" alt="Corte de cabelo solidário"></div>
+      <div class="galeria-item"><img src="Captura de tela 2025-04-02 193759.png" alt="Louvor ao ar livre"></div>
+      <div class="galeria-item"><img src="Captura de tela 2025-04-02 193502.png" alt="Evangelização nas ruas"></div>
+      <div class="galeria-item"><img src="IMG-20240728-WA0169.jpg" alt="Missão no sertão"></div>
+      <div class="galeria-item"><img src="IMG-20240728-WA0099.jpg" alt="Missão no sertão"></div>
+      <div class="galeria-item"><img src="louvor.png" alt="Momento de louvor"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTICIPE -->
+<section class="participe" id="participe">
+  <div class="container">
+    <div class="participe-grid">
+      <div class="participe-info">
+        <p class="section-label">Faça parte</p>
+        <h2 class="section-title">Deus está chamando — você está disposto?</h2>
+        <div class="divider"></div>
+        <p>Você sente o chamado para ser instrumento de Deus no sertão? Junte-se a nós nesta jornada de fé e amor ao próximo! Cada missão é uma oportunidade única de impactar vidas e ser resposta às orações de muitos.</p>
+        <p>Após o cadastro, nossa equipe entrará em contato com os detalhes da próxima viagem e os preparativos necessários.</p>
+        <div class="requisitos">
+          <div class="req-item"><span class="req-dot"></span><span>Disponibilidade para viagem de 3 a 5 dias</span></div>
+          <div class="req-item"><span class="req-dot"></span><span>Participação nos encontros preparatórios</span></div>
+          <div class="req-item"><span class="req-dot"></span><span>Comprometimento com os valores da missão</span></div>
+          <div class="req-item"><span class="req-dot"></span><span>Contribuição com os custos da viagem</span></div>
+          <div class="req-item"><span class="req-dot"></span><span>Pessoas de todas as idades são bem-vindas</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="form-card" id="formCard">
+          <h3>Cadastre-se para participar</h3>
+          <form id="inscricaoForm">
+            <div class="form-group">
+              <label for="nome">Nome completo</label>
+              <input type="text" id="nome" placeholder="Seu nome completo" required>
             </div>
-        </section>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="idade">Idade</label>
+                <input type="number" id="idade" placeholder="25" min="12" max="99">
+              </div>
+              <div class="form-group">
+                <label for="telefone">WhatsApp</label>
+                <input type="tel" id="telefone" placeholder="(87) 99999-0000">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">E-mail</label>
+              <input type="email" id="email" placeholder="seu@email.com" required>
+            </div>
+            <div class="form-group">
+              <label for="senha">Criar senha</label>
+              <input type="password" id="senha" placeholder="Mínimo 6 caracteres" required>
+            </div>
+            <div class="form-group">
+              <label for="cidade">Cidade / Estado</label>
+              <input type="text" id="cidade" placeholder="Ex: Petrolina – PE">
+            </div>
+            <div class="form-group">
+              <label for="habilidade">Você tem alguma habilidade especial?</label>
+              <select id="habilidade">
+                <option value="">Selecione (opcional)</option>
+                <option>Louvor / música</option>
+                <option>Saúde (enfermagem, medicina, etc.)</option>
+                <option>Pregação / ensino</option>
+                <option>Trabalho com crianças</option>
+                <option>Fotografia / comunicação</option>
+                <option>Outro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="motivacao">Por que você quer participar?</label>
+              <textarea id="motivacao" placeholder="Conte um pouco sobre sua motivação..."></textarea>
+            </div>
+            <button type="submit" class="form-submit">Criar conta e se inscrever</button>
+          </form>
+        </div>
+        <div class="form-sucesso" id="formSucesso">
+          <div class="check">✓</div>
+          <h4>Cadastro realizado!</h4>
+          <p>Bem-vindo à missão! Acesse seu painel para acompanhar sua inscrição e futuros certificados.</p>
+          <a href="painel.html" class="btn-primary" style="margin-top:1rem; display:inline-block;">Acessar meu painel</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <footer>
-            <p>Acompanhe nosso trabalho e testemunhos em nosso Instagram: <a href="https://www.instagram.com/missaoideaosertao" target="_blank" style="color: white;">@missaoideaosertao</a></p>
-        </footer>
-    </body>
-    </html>
+<!-- RODAPÉ -->
+<footer class="rodape" id="contato">
+  <div class="container">
+    <div class="rodape-grid">
+      <div>
+        <h3>Missão Ide ao Sertão</h3>
+        <p>Um projeto de fé e serviço levando o amor de Deus às comunidades do sertão nordestino. Cada viagem é uma semente — e colheitas são eternas.</p>
+      </div>
+      <div class="rodape-col">
+  <h4>Contato</h4>
+  <ul>
+    <li><a href="https://www.instagram.com/missaoideaosertao" target="_blank">@missaoideaosertao</a></li>
+    <li><a href="https://wa.me/5574998109982" target="_blank">(74) 99810-9982</a></li>
+  </ul>
+</div>
+      <div class="rodape-col">
+        <h4>Contato</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/missaoideaosertao" target="_blank">Instagram</a></li>
+          <li><a href="#contato">WhatsApp</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="rodape-bottom">
+      <p>© 2025 Missão Ide ao Sertão. Desenvolvido com fé e código.</p>
+      <p>Mateus 28:19</p>
+    </div>
+  </div>
+</footer>
 
-
-
-
-
-
-
-
-
-
-
-
+<script type="module" src="js/supabase.js"></script>
+<script type="module" src="js/index.js"></script>
+<a href="https://wa.me/5574998109982" target="_blank" class="whatsapp-float" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+</body>
+</html>
