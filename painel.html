@@ -8,9 +8,9 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="logoide.ico.ico">
   <style>
-    .painel-page { min-height: 100vh; background: var(--osso); padding-top: 64px; }
-    .painel-header { background: var(--branco); border-bottom: 2px solid var(--amarelo); padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; }
-    .painel-header-logo img { height: 40px; }
+    .painel-page { min-height: 100vh; background: var(--osso); }
+    .painel-header { background: var(--branco); border-bottom: 2px solid var(--amarelo); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+    .painel-header img { height: 40px; }
     .painel-header-user { display: flex; align-items: center; gap: 1rem; font-size: 0.9rem; color: var(--texto-suave); }
     .btn-sair { background: none; border: 1.5px solid var(--amarelo); color: var(--marrom); padding: 0.4rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: background 0.2s; }
     .btn-sair:hover { background: var(--amarelo-suave); }
@@ -24,6 +24,10 @@
     .painel-card-label { font-size: 0.85rem; color: var(--texto-suave); margin-top: 0.3rem; }
     .painel-secao { margin-bottom: 2.5rem; }
     .painel-secao h2 { font-family: 'EB Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--texto); margin-bottom: 1.2rem; border-bottom: 2px solid var(--amarelo); padding-bottom: 0.5rem; }
+    .evento-ativo-card { background: var(--branco); border-radius: 8px; border: 2px solid var(--amarelo); padding: 1.5rem; }
+    .evento-ativo-card h3 { font-family: 'EB Garamond', serif; font-size: 1.4rem; font-weight: 700; color: var(--texto); margin-bottom: 0.5rem; }
+    .evento-ativo-card p { color: var(--texto-suave); font-size: 0.93rem; margin-bottom: 0.4rem; }
+    .evento-ativo-card .btn-primary { margin-top: 1.2rem; display: inline-block; border: none; cursor: pointer; font-family: 'Inter', sans-serif; }
     .inscricao-item { background: var(--branco); border-radius: 8px; border: 1px solid rgba(245,194,0,0.4); padding: 1.2rem 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
     .inscricao-info h4 { font-family: 'EB Garamond', serif; font-size: 1.1rem; font-weight: 700; color: var(--texto); margin-bottom: 0.2rem; }
     .inscricao-info p { font-size: 0.85rem; color: var(--texto-suave); }
@@ -37,6 +41,10 @@
     .btn-certificado { background: var(--amarelo); color: var(--marrom); border: none; padding: 0.5rem 1.2rem; border-radius: 4px; font-weight: 700; font-size: 0.85rem; cursor: pointer; text-decoration: none; transition: background 0.2s; }
     .btn-certificado:hover { background: var(--amarelo-escuro); }
     .vazio { text-align: center; padding: 2rem; color: var(--texto-suave); font-size: 0.95rem; background: var(--branco); border-radius: 8px; border: 1px dashed rgba(245,194,0,0.5); }
+    .obs-group { margin-top: 1rem; }
+    .obs-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--texto); margin-bottom: 0.4rem; }
+    .obs-group textarea { width: 100%; padding: 0.65rem 0.85rem; border: 1.5px solid rgba(245,194,0,0.5); border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 0.93rem; resize: vertical; min-height: 80px; outline: none; }
+    .obs-group textarea:focus { border-color: var(--amarelo); }
     @media (max-width: 600px) { .painel-cards { grid-template-columns: 1fr; } .inscricao-item, .certificado-item { flex-direction: column; gap: 1rem; align-items: flex-start; } }
   </style>
 </head>
@@ -44,9 +52,7 @@
 
 <div class="painel-page">
   <div class="painel-header">
-    <a href="index.html" class="painel-header-logo">
-      <img src="logo nova do ide.jpg" alt="Logo">
-    </a>
+    <a href="index.html"><img src="logo nova do ide.jpg" alt="Logo"></a>
     <div class="painel-header-user">
       <span id="header-nome">Carregando...</span>
       <button class="btn-sair" onclick="sair()">Sair</button>
@@ -74,11 +80,19 @@
       </div>
     </div>
 
+    <!-- PRÓXIMO EVENTO -->
     <div class="painel-secao">
-      <h2>Minhas inscrições</h2>
+      <h2>Próximo evento</h2>
+      <div id="secao-evento-ativo"></div>
+    </div>
+
+    <!-- HISTÓRICO -->
+    <div class="painel-secao">
+      <h2>Histórico de inscrições</h2>
       <div id="lista-inscricoes"><div class="vazio">Carregando...</div></div>
     </div>
 
+    <!-- CERTIFICADOS -->
     <div class="painel-secao">
       <h2>Meus certificados</h2>
       <div id="lista-certificados"><div class="vazio">Carregando...</div></div>
@@ -89,70 +103,152 @@
 <script type="module">
   import { supabase } from './js/supabase.js'
 
+  let eventoAtivoId = null
+
   async function init() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) { window.location.href = 'login.html'; return }
 
     const { data: perfil } = await supabase.from('perfis').select('*').eq('id', user.id).single()
     if (perfil) {
-      document.getElementById('nome-usuario').textContent = perfil.nome.split(' ')[0]
-      document.getElementById('header-nome').textContent = perfil.nome.split(' ')[0]
+      const primeiroNome = perfil.nome.split(' ')[0]
+      document.getElementById('nome-usuario').textContent = primeiroNome
+      document.getElementById('header-nome').textContent = primeiroNome
     }
 
-    // Inscrições
+    await carregarEventoAtivo(user.id)
+    await carregarInscricoes(user.id)
+    await carregarCertificados(user.id)
+  }
+
+  async function carregarEventoAtivo(userId) {
+    const { data: evento } = await supabase
+      .from('eventos')
+      .select('*')
+      .eq('ativo', true)
+      .order('data_inicio', { ascending: true })
+      .limit(1)
+      .single()
+
+    const secao = document.getElementById('secao-evento-ativo')
+
+    if (!evento) {
+      secao.innerHTML = '<div class="vazio">Nenhum evento ativo no momento. Fique de olho nas novidades!</div>'
+      return
+    }
+
+    eventoAtivoId = evento.id
+
+    // Verificar se já se inscreveu
+    const { data: jaInscrito } = await supabase
+      .from('inscricoes')
+      .select('id, status')
+      .eq('usuario_id', userId)
+      .eq('evento_id', evento.id)
+      .single()
+
+    const dataInicio = new Date(evento.data_inicio + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
+    const dataFim = new Date(evento.data_fim + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
+
+    if (jaInscrito) {
+      const statusTexto = jaInscrito.status === 'pendente' ? 'Inscrição pendente de aprovação' : jaInscrito.status === 'aprovado' ? 'Participação confirmada! ✓' : 'Inscrição não aprovada'
+      secao.innerHTML = `
+        <div class="evento-ativo-card">
+          <h3>${evento.nome}</h3>
+          <p>📅 ${dataInicio} a ${dataFim}</p>
+          <p>📍 ${evento.local}</p>
+          <p>${evento.descricao}</p>
+          <span class="status-badge status-${jaInscrito.status}" style="margin-top:1rem;display:inline-block;">${statusTexto}</span>
+        </div>`
+    } else {
+      secao.innerHTML = `
+        <div class="evento-ativo-card">
+          <h3>${evento.nome}</h3>
+          <p>📅 ${dataInicio} a ${dataFim}</p>
+          <p>📍 ${evento.local}</p>
+          <p>${evento.descricao}</p>
+          <div class="obs-group">
+            <label for="obs-evento">Observação (opcional)</label>
+            <textarea id="obs-evento" placeholder="Alguma informação adicional para este evento?"></textarea>
+          </div>
+          <button class="btn-primary" onclick="inscreverEvento('${userId}')">Quero participar deste evento</button>
+        </div>`
+    }
+  }
+
+  async function carregarInscricoes(userId) {
     const { data: inscricoes } = await supabase
       .from('inscricoes')
-      .select('*, eventos(nome, data_inicio, data_fim, local)')
-      .eq('usuario_id', user.id)
+      .select('*, eventos(nome, data_inicio, local)')
+      .eq('usuario_id', userId)
       .order('created_at', { ascending: false })
 
     document.getElementById('total-inscricoes').textContent = inscricoes?.length || 0
     const aprovadas = inscricoes?.filter(i => i.status === 'aprovado') || []
     document.getElementById('total-aprovadas').textContent = aprovadas.length
 
-    const listaInscricoes = document.getElementById('lista-inscricoes')
+    const lista = document.getElementById('lista-inscricoes')
     if (!inscricoes || inscricoes.length === 0) {
-      listaInscricoes.innerHTML = '<div class="vazio">Você ainda não tem inscrições. <a href="index.html#participe">Inscreva-se em um evento!</a></div>'
-    } else {
-      listaInscricoes.innerHTML = inscricoes.map(i => {
-        const statusClass = `status-${i.status}`
-        const statusTexto = i.status === 'pendente' ? 'Pendente' : i.status === 'aprovado' ? 'Aprovado' : 'Não aprovado'
-        const data = i.eventos ? new Date(i.eventos.data_inicio + 'T00:00:00').toLocaleDateString('pt-BR') : '--'
-        return `
-          <div class="inscricao-item">
-            <div class="inscricao-info">
-              <h4>${i.eventos?.nome || 'Evento'}</h4>
-              <p>${i.eventos?.local || ''} • ${data}</p>
-            </div>
-            <span class="status-badge ${statusClass}">${statusTexto}</span>
-          </div>`
-      }).join('')
+      lista.innerHTML = '<div class="vazio">Você ainda não tem inscrições em eventos.</div>'
+      return
     }
 
-    // Certificados
+    lista.innerHTML = inscricoes.map(i => {
+      const data = i.eventos ? new Date(i.eventos.data_inicio + 'T00:00:00').toLocaleDateString('pt-BR') : '--'
+      const statusTexto = i.status === 'pendente' ? 'Pendente' : i.status === 'aprovado' ? 'Aprovado' : 'Não aprovado'
+      return `
+        <div class="inscricao-item">
+          <div class="inscricao-info">
+            <h4>${i.eventos?.nome || 'Evento'}</h4>
+            <p>${i.eventos?.local || ''} • ${data}</p>
+          </div>
+          <span class="status-badge status-${i.status}">${statusTexto}</span>
+        </div>`
+    }).join('')
+  }
+
+  async function carregarCertificados(userId) {
     const { data: certificados } = await supabase
       .from('certificados')
       .select('*, eventos(nome, data_inicio)')
-      .eq('usuario_id', user.id)
+      .eq('usuario_id', userId)
 
     document.getElementById('total-certificados').textContent = certificados?.length || 0
 
-    const listaCertificados = document.getElementById('lista-certificados')
+    const lista = document.getElementById('lista-certificados')
     if (!certificados || certificados.length === 0) {
-      listaCertificados.innerHTML = '<div class="vazio">Nenhum certificado disponível ainda. Os certificados são emitidos após a confirmação de participação.</div>'
-    } else {
-      listaCertificados.innerHTML = certificados.map(c => {
-        const data = c.eventos ? new Date(c.eventos.data_inicio + 'T00:00:00').toLocaleDateString('pt-BR') : '--'
-        return `
-          <div class="certificado-item">
-            <div class="certificado-info">
-              <h4>${c.eventos?.nome || 'Evento'}</h4>
-              <p>Emitido em ${new Date(c.emitido_em).toLocaleDateString('pt-BR')}</p>
-            </div>
-            <a href="${c.url_pdf}" target="_blank" class="btn-certificado">Baixar certificado</a>
-          </div>`
-      }).join('')
+      lista.innerHTML = '<div class="vazio">Nenhum certificado disponível ainda. Os certificados são emitidos após cada evento.</div>'
+      return
     }
+
+    lista.innerHTML = certificados.map(c => `
+      <div class="certificado-item">
+        <div class="certificado-info">
+          <h4>${c.eventos?.nome || 'Evento'}</h4>
+          <p>Emitido em ${new Date(c.emitido_em).toLocaleDateString('pt-BR')}</p>
+        </div>
+        <a href="${c.url_pdf}" target="_blank" class="btn-certificado">Baixar certificado</a>
+      </div>`).join('')
+  }
+
+  window.inscreverEvento = async function(userId) {
+    if (!eventoAtivoId) return
+    const obs = document.getElementById('obs-evento')?.value || ''
+
+    const { error } = await supabase.from('inscricoes').insert({
+      usuario_id: userId,
+      evento_id: eventoAtivoId,
+      motivacao: obs,
+      status: 'pendente'
+    })
+
+    if (error) {
+      alert('Erro ao se inscrever: ' + error.message)
+      return
+    }
+
+    await carregarEventoAtivo(userId)
+    await carregarInscricoes(userId)
   }
 
   window.sair = async function() {

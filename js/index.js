@@ -6,7 +6,6 @@ async function carregarProximoEvento() {
     .from('eventos')
     .select('*')
     .eq('ativo', true)
-    .gte('data_inicio', new Date().toISOString().split('T')[0])
     .order('data_inicio', { ascending: true })
     .limit(1)
     .single()
@@ -28,7 +27,18 @@ async function carregarProximoEvento() {
   document.getElementById('evento-descricao').textContent = data.descricao
 }
 
-// Formulário de inscrição
+// Botão inscrever no evento — verifica se está logado
+async function configurarBtnEvento() {
+  const { data: { user } } = await supabase.auth.getUser()
+  const btn = document.getElementById('btn-inscrever-evento')
+  if (user) {
+    btn.href = 'painel.html'
+  } else {
+    btn.href = 'login.html'
+  }
+}
+
+// Formulário de cadastro
 document.getElementById('inscricaoForm').addEventListener('submit', async (e) => {
   e.preventDefault()
 
@@ -37,62 +47,48 @@ document.getElementById('inscricaoForm').addEventListener('submit', async (e) =>
   const senha = document.getElementById('senha').value
   const telefone = document.getElementById('telefone').value
   const cidade = document.getElementById('cidade').value
+  const estado_civil = document.getElementById('estado_civil').value
+  const cidade_igreja = document.getElementById('cidade_igreja').value
+  const nome_pastor = document.getElementById('nome_pastor').value
+  const telefone_pastor = document.getElementById('telefone_pastor').value
+  const batizado = document.getElementById('batizado').value === 'true'
+  const experiencia_missionaria = document.getElementById('experiencia_missionaria').value === 'true'
   const habilidade = document.getElementById('habilidade').value
-  const motivacao = document.getElementById('motivacao').value
+  const visao_missoes = document.getElementById('visao_missoes').value
 
   const botao = document.querySelector('.form-submit')
   botao.textContent = 'Cadastrando...'
   botao.disabled = true
 
-  // Criar conta no Supabase Auth
-  const { data: authData, error: authError } = await supabase.auth.signUp({
-    email,
-    password: senha
-  })
+  const { data: authData, error: authError } = await supabase.auth.signUp({ email, password: senha })
 
   if (authError) {
     alert('Erro ao criar conta: ' + authError.message)
-    botao.textContent = 'Criar conta e se inscrever'
+    botao.textContent = 'Criar minha conta'
     botao.disabled = false
     return
   }
 
-  // Salvar perfil
-  const { error: perfilError } = await supabase
-    .from('perfis')
-    .insert({
-      id: authData.user.id,
-      nome,
-      email,
-      telefone,
-      cidade
-    })
+  const { error: perfilError } = await supabase.from('perfis').insert({
+    id: authData.user.id,
+    nome,
+    email,
+    telefone,
+    cidade,
+    estado_civil,
+    cidade_igreja,
+    nome_pastor,
+    telefone_pastor,
+    batizado,
+    experiencia_missionaria,
+    habilidade,
+    visao_missoes
+  })
 
   if (perfilError) {
     console.error('Erro ao salvar perfil:', perfilError)
   }
 
-  // Buscar próximo evento ativo
-  const { data: evento } = await supabase
-    .from('eventos')
-    .select('id')
-    .eq('ativo', true)
-    .order('data_inicio', { ascending: true })
-    .limit(1)
-    .single()
-
-  // Salvar inscrição
-  if (evento) {
-    await supabase.from('inscricoes').insert({
-      usuario_id: authData.user.id,
-      evento_id: evento.id,
-      habilidade,
-      motivacao,
-      status: 'pendente'
-    })
-  }
-
-  // Mostrar sucesso
   document.getElementById('formCard').style.display = 'none'
   document.getElementById('formSucesso').style.display = 'block'
 })
@@ -110,3 +106,4 @@ document.querySelectorAll('.nav-links a').forEach(link => {
 
 // Inicializar
 carregarProximoEvento()
+configurarBtnEvento()

@@ -636,3 +636,12 @@ section { padding: 5rem 2rem; }
   height: 30px;
   fill: white;
 }
+.form-section-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--terracota);
+  margin: 1.2rem 0 0.8rem;
+  display: block;
+}
