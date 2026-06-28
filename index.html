@@ -162,21 +162,35 @@
               <input type="text" id="nome" placeholder="Seu nome completo" required>
             </div>
             <div class="form-row">
-              <div class="form-group">
-                <label for="telefone">WhatsApp</label>
-                <input type="tel" id="telefone" placeholder="(87) 99999-0000">
-              </div>
-              <div class="form-group">
-                <label for="estado_civil">Estado civil</label>
-                <select id="estado_civil">
-                  <option value="">Selecione</option>
-                  <option>Solteiro(a)</option>
-                  <option>Casado(a)</option>
-                  <option>Divorciado(a)</option>
-                  <option>Viúvo(a)</option>
-                </select>
-              </div>
-            </div>
+  <div class="form-group">
+    <label for="telefone">WhatsApp</label>
+    <input type="tel" id="telefone" placeholder="(87) 99999-0000">
+  </div>
+  <div class="form-group">
+    <label for="idade">Idade</label>
+    <input type="number" id="idade" placeholder="25" min="12" max="99">
+  </div>
+</div>
+<div class="form-row">
+  <div class="form-group">
+    <label for="genero">Gênero</label>
+    <select id="genero">
+      <option value="">Selecione</option>
+      <option value="masculino">Masculino</option>
+      <option value="feminino">Feminino</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="estado_civil">Estado civil</label>
+    <select id="estado_civil">
+      <option value="">Selecione</option>
+      <option>Solteiro(a)</option>
+      <option>Casado(a)</option>
+      <option>Divorciado(a)</option>
+      <option>Viúvo(a)</option>
+    </select>
+  </div>
+</div>
             <div class="form-group">
               <label for="cidade">Cidade</label>
               <input type="text" id="cidade" placeholder="Ex: Petrolina – PE">

@@ -65,21 +65,35 @@
         <input type="text" id="cad-nome" placeholder="Seu nome completo">
       </div>
       <div class="form-row">
-        <div class="form-group">
-          <label for="cad-telefone">WhatsApp</label>
-          <input type="tel" id="cad-telefone" placeholder="(87) 99999-0000">
-        </div>
-        <div class="form-group">
-          <label for="cad-estado-civil">Estado civil</label>
-          <select id="cad-estado-civil">
-            <option value="">Selecione</option>
-            <option>Solteiro(a)</option>
-            <option>Casado(a)</option>
-            <option>Divorciado(a)</option>
-            <option>Viúvo(a)</option>
-          </select>
-        </div>
-      </div>
+  <div class="form-group">
+    <label for="cad-telefone">WhatsApp</label>
+    <input type="tel" id="cad-telefone" placeholder="(87) 99999-0000">
+  </div>
+  <div class="form-group">
+    <label for="cad-idade">Idade</label>
+    <input type="number" id="cad-idade" placeholder="25" min="12" max="99">
+  </div>
+</div>
+<div class="form-row">
+  <div class="form-group">
+    <label for="cad-genero">Gênero</label>
+    <select id="cad-genero">
+      <option value="">Selecione</option>
+      <option value="masculino">Masculino</option>
+      <option value="feminino">Feminino</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="cad-estado-civil">Estado civil</label>
+    <select id="cad-estado-civil">
+      <option value="">Selecione</option>
+      <option>Solteiro(a)</option>
+      <option>Casado(a)</option>
+      <option>Divorciado(a)</option>
+      <option>Viúvo(a)</option>
+    </select>
+  </div>
+</div>
       <div class="form-group">
         <label for="cad-cidade">Cidade</label>
         <input type="text" id="cad-cidade" placeholder="Ex: Petrolina – PE">
@@ -217,9 +231,12 @@
     const { data, error } = await supabase.auth.signUp({ email, password: senha })
     if (error) { erroEl.textContent = 'Erro: ' + error.message; erroEl.style.display = 'block'; return }
 
+    const genero = document.getElementById('cad-genero').value
+    const idade = parseInt(document.getElementById('cad-idade').value) || null
+
     await supabase.from('perfis').insert({
       id: data.user.id,
-      nome, email, telefone, cidade, estado_civil,
+      nome, email, telefone, cidade, genero, idade, estado_civil,
       cidade_igreja, nome_pastor, telefone_pastor,
       batizado, experiencia_missionaria, habilidade, visao_missoes
     })

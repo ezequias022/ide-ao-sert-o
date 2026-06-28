@@ -208,10 +208,12 @@
   }
 
   async function carregarCertificados(userId) {
-    const { data: certificados } = await supabase
+    const { data: certificados, error } = await supabase
       .from('certificados')
       .select('*, eventos(nome, data_inicio)')
       .eq('usuario_id', userId)
+
+    console.log('certificados:', certificados, 'erro:', error)
 
     document.getElementById('total-certificados').textContent = certificados?.length || 0
 

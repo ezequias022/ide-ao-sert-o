@@ -95,12 +95,17 @@ document.getElementById('inscricaoForm').addEventListener('submit', async (e) =>
     return
   }
 
+  const genero = document.getElementById('genero').value
+  const idade = parseInt(document.getElementById('idade').value) || null
+
   const { error: perfilError } = await supabase.from('perfis').insert({
     id: authData.user.id,
     nome,
     email,
     telefone,
     cidade,
+    genero,
+    idade,
     estado_civil,
     cidade_igreja,
     nome_pastor,

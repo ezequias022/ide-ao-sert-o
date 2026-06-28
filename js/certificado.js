@@ -5,7 +5,7 @@ export async function gerarCertificadoPDF(usuarioId, eventoId) {
   // Buscar dados do usuário e evento
   const { data: perfil } = await supabase
     .from('perfis')
-    .select('nome')
+    .select('nome, genero')
     .eq('id', usuarioId)
     .single()
 
@@ -51,7 +51,7 @@ export async function gerarCertificadoPDF(usuarioId, eventoId) {
   <text x="400" y="165" text-anchor="middle" font-family="Georgia, serif" font-size="15" fill="#5C3D2E">Certificamos que</text>
   <text x="400" y="210" text-anchor="middle" font-family="Georgia, serif" font-size="28" font-weight="700" fill="#3D2B1F">${perfil.nome}</text>
   <line x1="120" y1="220" x2="680" y2="220" stroke="#B5541A" stroke-width="1"/>
-  <text x="400" y="258" text-anchor="middle" font-family="Georgia, serif" font-size="15" fill="#5C3D2E">participou como missionário voluntário no</text>
+  <text x="400" y="258" text-anchor="middle" font-family="Georgia, serif" font-size="15" fill="#5C3D2E">participou como ${perfil.genero === 'feminino' ? 'missionária voluntária' : 'missionário voluntário'} no</text>
   <text x="400" y="295" text-anchor="middle" font-family="Georgia, serif" font-size="19" font-weight="700" fill="#B5541A">${evento.nome}</text>
   <text x="400" y="325" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#5C3D2E">realizado nos dias</text>
   <text x="400" y="350" text-anchor="middle" font-family="Georgia, serif" font-size="17" font-weight="700" fill="#3D2B1F">${dataInicio} a ${dataFim}</text>

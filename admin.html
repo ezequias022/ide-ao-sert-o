@@ -169,7 +169,7 @@
   async function carregarInscricoes() {
     const { data, error } = await supabase
   .from('inscricoes')
-  .select('*, perfis(nome, email, telefone, cidade, habilidade), eventos(nome)')
+  .select('*, perfis(nome, email, telefone, cidade, habilidade, genero, idade, estado_civil), eventos(nome)')
   .order('created_at', { ascending: false })
 
 console.log('inscricoes:', data, 'erro:', error)
