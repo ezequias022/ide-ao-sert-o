@@ -1,5 +1,31 @@
 import { supabase } from './supabase.js'
 
+// Verificar login e ajustar página
+async function verificarLogin() {
+  const { data: { user } } = await supabase.auth.getUser()
+  const navLogin = document.getElementById('nav-login')
+
+  if (user) {
+    // Buscar nome do perfil
+    const { data: perfil } = await supabase.from('perfis').select('nome').eq('id', user.id).single()
+    const nome = perfil?.nome.split(' ')[0] || 'Missionário'
+
+    // Atualizar nav
+    navLogin.textContent = `Olá, ${nome}`
+    navLogin.href = 'painel.html'
+
+    // Esconder seção cadastro e mostrar mensagem
+    const participe = document.getElementById('participe')
+    participe.innerHTML = `
+      <div class="container" style="text-align:center;padding:3rem 2rem;">
+        <p class="section-label">Você está conectado</p>
+        <h2 class="section-title">Bem-vindo de volta, ${nome}!</h2>
+        <div class="divider" style="margin:1rem auto;"></div>
+        <p style="color:var(--texto-suave);margin-bottom:1.5rem;">Acesse seu painel para se inscrever no próximo evento e acompanhar sua jornada missionária.</p>
+        <a href="painel.html" class="btn-primary">Acessar meu painel</a>
+      </div>`
+  }
+}
 // Carregar próximo evento
 async function carregarProximoEvento() {
   const { data, error } = await supabase
@@ -107,3 +133,4 @@ document.querySelectorAll('.nav-links a').forEach(link => {
 // Inicializar
 carregarProximoEvento()
 configurarBtnEvento()
+verificarLogin()
