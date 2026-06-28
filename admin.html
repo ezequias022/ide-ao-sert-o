@@ -166,10 +166,12 @@
   }
 
   async function carregarInscricoes() {
-    const { data } = await supabase
-      .from('inscricoes')
-      .select('*, perfis(nome, email, telefone, cidade), eventos(nome)')
-      .order('created_at', { ascending: false })
+    const { data, error } = await supabase
+  .from('inscricoes')
+  .select('*, perfis(nome, email, telefone, cidade, habilidade), eventos(nome)')
+  .order('created_at', { ascending: false })
+
+console.log('inscricoes:', data, 'erro:', error)
 
     const total = data?.length || 0
     const pendentes = data?.filter(i => i.status === 'pendente').length || 0
@@ -192,7 +194,7 @@
         <td>${i.perfis?.telefone || '--'}</td>
         <td>${i.perfis?.cidade || '--'}</td>
         <td>${i.eventos?.nome || '--'}</td>
-        <td>${i.habilidade || '--'}</td>
+       <td>${i.perfis?.habilidade || '--'}</td>
         <td><span class="status-badge status-${i.status}">${i.status}</span></td>
         <td>
           ${i.status === 'pendente' ? `
