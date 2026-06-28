@@ -19,8 +19,13 @@ export async function gerarCertificadoPDF(usuarioId, eventoId) {
     return null
   }
 
-  const dataInicio = new Date(evento.data_inicio + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
-  const dataFim = new Date(evento.data_fim + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
+const dI = new Date(evento.data_inicio + 'T00:00:00')
+const dF = new Date(evento.data_fim + 'T00:00:00')
+const mes = dI.toLocaleDateString('pt-BR', { month: 'long' })
+const ano = dI.getFullYear()
+const dataInicio = dI.getDate()
+const dataFim = dF.getDate()
+const dataFormatada = `${dataInicio} e ${dataFim} de ${mes} de ${ano}`
   const termo = perfil.genero === 'feminino' ? 'missionária voluntária' : 'missionário voluntário'
 
   const svgContent = `
@@ -72,7 +77,7 @@ export async function gerarCertificadoPDF(usuarioId, eventoId) {
   <text x="400" y="258" text-anchor="middle" font-family="Georgia, serif" font-size="15" fill="#5C3D2E">participou como ${termo} no</text>
   <text x="400" y="295" text-anchor="middle" font-family="Georgia, serif" font-size="19" font-weight="700" fill="#B5541A">${evento.nome}</text>
   <text x="400" y="325" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#5C3D2E">realizado nos dias</text>
-  <text x="400" y="350" text-anchor="middle" font-family="Georgia, serif" font-size="17" font-weight="700" fill="#3D2B1F">${dataInicio} a ${dataFim}</text>
+  <text x="400" y="350" text-anchor="middle" font-family="Georgia, serif" font-size="17" font-weight="700" fill="#3D2B1F">${dataFormatada}</text>
   <rect x="140" y="368" width="520" height="48" fill="#FFF8D6" rx="4" stroke="#F5C200" stroke-width="1"/>
   <text x="400" y="388" text-anchor="middle" font-family="Georgia, serif" font-size="12" font-style="italic" fill="#5C3D2E">"Ide por todo o mundo e pregai o Evangelho a toda criatura."</text>
   <text x="400" y="407" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#8C5A2E">Marcos 16:15</text>
