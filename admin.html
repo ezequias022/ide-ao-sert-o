@@ -152,6 +152,7 @@
 </div>
 
 <script type="module">
+  import { gerarCertificadoPDF } from './js/certificado.js'
   import { supabase } from './js/supabase.js'
 
   async function init() {
@@ -236,7 +237,7 @@ console.log('inscricoes:', data, 'erro:', error)
     carregarInscricoes()
   }
 
-  window.gerarCertificado = async function(inscricaoId, usuarioId, eventoId) {
+ window.gerarCertificado = async function(inscricaoId, usuarioId, eventoId) {
     const { data: jaExiste } = await supabase
       .from('certificados')
       .select('id')
@@ -246,10 +247,16 @@ console.log('inscricoes:', data, 'erro:', error)
 
     if (jaExiste) { alert('Certificado já emitido para este participante.'); return }
 
+    alert('Gerando certificado, aguarde...')
+
+    const url = await gerarCertificadoPDF(usuarioId, eventoId)
+
+    if (!url) { alert('Erro ao gerar certificado.'); return }
+
     await supabase.from('certificados').insert({
       usuario_id: usuarioId,
       evento_id: eventoId,
-      url_pdf: '#',
+      url_pdf: url,
       emitido_em: new Date().toISOString()
     })
 
