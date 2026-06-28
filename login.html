@@ -8,100 +8,20 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="logoide.ico.ico">
   <style>
-    .login-page {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      background:
-        linear-gradient(to bottom, rgba(245,194,0,0.08) 0%, rgba(245,194,0,0.15) 100%),
-        var(--osso);
-    }
-
-    .login-card {
-      background: var(--branco);
-      border-radius: 10px;
-      border: 2px solid var(--amarelo);
-      padding: 2.5rem;
-      width: 100%;
-      max-width: 440px;
-    }
-
-    .login-logo {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .login-logo img {
-      height: 64px;
-      object-fit: contain;
-    }
-
-    .login-tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      margin-bottom: 2rem;
-      border: 2px solid var(--amarelo);
-      border-radius: 6px;
-      overflow: hidden;
-    }
-
-    .login-tab {
-      padding: 0.7rem;
-      text-align: center;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      background: var(--branco);
-      color: var(--texto-suave);
-      border: none;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .login-tab.ativo {
-      background: var(--amarelo);
-      color: var(--marrom);
-    }
-
+    .login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; background: linear-gradient(to bottom, rgba(245,194,0,0.08) 0%, rgba(245,194,0,0.15) 100%), var(--osso); }
+    .login-card { background: var(--branco); border-radius: 10px; border: 2px solid var(--amarelo); padding: 2.5rem; width: 100%; max-width: 500px; }
+    .login-logo { text-align: center; margin-bottom: 2rem; }
+    .login-logo img { height: 64px; object-fit: contain; }
+    .login-tabs { display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 2rem; border: 2px solid var(--amarelo); border-radius: 6px; overflow: hidden; }
+    .login-tab { padding: 0.7rem; text-align: center; font-size: 0.9rem; font-weight: 600; cursor: pointer; background: var(--branco); color: var(--texto-suave); border: none; transition: background 0.2s, color 0.2s; }
+    .login-tab.ativo { background: var(--amarelo); color: var(--marrom); }
     .login-form { display: none; }
     .login-form.ativo { display: block; }
-
-    .login-footer {
-      text-align: center;
-      margin-top: 1.5rem;
-      font-size: 0.85rem;
-      color: var(--texto-suave);
-    }
-
-    .login-footer a {
-      color: var(--terracota);
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .erro-msg {
-      background: #fff0f0;
-      border: 1px solid #ffcccc;
-      color: #cc0000;
-      padding: 0.7rem 1rem;
-      border-radius: 4px;
-      font-size: 0.85rem;
-      margin-bottom: 1rem;
-      display: none;
-    }
-
-    .sucesso-msg {
-      background: #fffbea;
-      border: 1px solid var(--amarelo);
-      color: var(--marrom);
-      padding: 0.7rem 1rem;
-      border-radius: 4px;
-      font-size: 0.85rem;
-      margin-bottom: 1rem;
-      display: none;
-    }
+    .login-footer { text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--texto-suave); }
+    .login-footer a { color: var(--terracota); text-decoration: none; font-weight: 600; }
+    .erro-msg { background: #fff0f0; border: 1px solid #ffcccc; color: #cc0000; padding: 0.7rem 1rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 1rem; display: none; }
+    .sucesso-msg { background: #fffbea; border: 1px solid var(--amarelo); color: var(--marrom); padding: 0.7rem 1rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 1rem; display: none; }
+    .form-section-label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terracota); margin: 1.2rem 0 0.8rem; display: block; }
   </style>
 </head>
 <body>
@@ -109,55 +29,40 @@
 <div class="login-page">
   <div class="login-card">
     <div class="login-logo">
-      <a href="index.html">
-        <img src="logo nova do ide.jpg" alt="Logo Missão Ide ao Sertão">
-      </a>
+      <a href="index.html"><img src="logo nova do ide.jpg" alt="Logo Missão Ide ao Sertão"></a>
     </div>
 
     <div class="login-tabs">
-  <button class="login-tab ativo" onclick="trocarAba('entrar')">Entrar</button>
-  <button class="login-tab" onclick="trocarAba('cadastrar')">Cadastrar</button>
-</div>
-
-<!-- RECUPERAR SENHA -->
-<div class="login-form" id="form-recuperar">
-  <div class="erro-msg" id="erro-recuperar"></div>
-  <div class="sucesso-msg" id="sucesso-recuperar"></div>
-  <p style="font-size:0.9rem;color:var(--texto-suave);margin-bottom:1rem;">Digite seu e-mail e enviaremos um link para redefinir sua senha.</p>
-  <div class="form-group">
-    <label for="rec-email">E-mail</label>
-    <input type="email" id="rec-email" placeholder="seu@email.com" required>
-  </div>
-  <button class="form-submit" onclick="recuperarSenha()">Enviar link</button>
-  <div class="login-footer">
-    <a href="#" onclick="trocarAba('entrar')">Voltar para o login</a>
-  </div>
-</div>
+      <button class="login-tab ativo" onclick="trocarAba('entrar')">Entrar</button>
+      <button class="login-tab" onclick="trocarAba('cadastrar')">Cadastrar</button>
+    </div>
 
     <!-- ENTRAR -->
     <div class="login-form ativo" id="form-entrar">
       <div class="erro-msg" id="erro-entrar"></div>
       <div class="form-group">
         <label for="login-email">E-mail</label>
-        <input type="email" id="login-email" placeholder="seu@email.com" required>
+        <input type="email" id="login-email" placeholder="seu@email.com">
       </div>
       <div class="form-group">
         <label for="login-senha">Senha</label>
-        <input type="password" id="login-senha" placeholder="Sua senha" required>
+        <input type="password" id="login-senha" placeholder="Sua senha">
       </div>
       <button class="form-submit" onclick="entrar()">Entrar</button>
-<div class="login-footer">
-  <a href="#" onclick="trocarAba('recuperar')">Esqueci minha senha</a> &nbsp;|&nbsp; Não tem conta? <a href="#" onclick="trocarAba('cadastrar')">Cadastre-se</a>
-</div>
+      <div class="login-footer">
+        <a href="#" onclick="trocarAba('recuperar')">Esqueci minha senha</a> &nbsp;|&nbsp; Não tem conta? <a href="#" onclick="trocarAba('cadastrar')">Cadastre-se</a>
+      </div>
     </div>
 
     <!-- CADASTRAR -->
     <div class="login-form" id="form-cadastrar">
       <div class="erro-msg" id="erro-cadastrar"></div>
       <div class="sucesso-msg" id="sucesso-cadastrar"></div>
+
+      <span class="form-section-label">Dados pessoais</span>
       <div class="form-group">
         <label for="cad-nome">Nome completo</label>
-        <input type="text" id="cad-nome" placeholder="Seu nome completo" required>
+        <input type="text" id="cad-nome" placeholder="Seu nome completo">
       </div>
       <div class="form-row">
         <div class="form-group">
@@ -165,21 +70,98 @@
           <input type="tel" id="cad-telefone" placeholder="(87) 99999-0000">
         </div>
         <div class="form-group">
-          <label for="cad-cidade">Cidade</label>
-          <input type="text" id="cad-cidade" placeholder="Petrolina – PE">
+          <label for="cad-estado-civil">Estado civil</label>
+          <select id="cad-estado-civil">
+            <option value="">Selecione</option>
+            <option>Solteiro(a)</option>
+            <option>Casado(a)</option>
+            <option>Divorciado(a)</option>
+            <option>Viúvo(a)</option>
+          </select>
         </div>
       </div>
       <div class="form-group">
+        <label for="cad-cidade">Cidade</label>
+        <input type="text" id="cad-cidade" placeholder="Ex: Petrolina – PE">
+      </div>
+
+      <span class="form-section-label">Dados da igreja</span>
+      <div class="form-group">
+        <label for="cad-igreja">Igreja</label>
+        <input type="text" id="cad-igreja" placeholder="Ex: Igreja Batista Central">
+      </div>
+      <div class="form-group">
+        <label for="cad-pastor">Nome do pastor</label>
+        <input type="text" id="cad-pastor" placeholder="Nome do pastor responsável">
+      </div>
+      <div class="form-group">
+        <label for="cad-tel-pastor">Telefone do pastor</label>
+        <input type="tel" id="cad-tel-pastor" placeholder="(74) 99999-0000">
+      </div>
+
+      <span class="form-section-label">Experiência missionária</span>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cad-batizado">É batizado?</label>
+          <select id="cad-batizado">
+            <option value="">Selecione</option>
+            <option value="true">Sim</option>
+            <option value="false">Não</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="cad-experiencia">Já foi missionário?</label>
+          <select id="cad-experiencia">
+            <option value="">Selecione</option>
+            <option value="true">Sim</option>
+            <option value="false">Não</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="cad-habilidade">Habilidade especial</label>
+        <select id="cad-habilidade">
+          <option value="">Selecione (opcional)</option>
+          <option>Louvor / música</option>
+          <option>Saúde (enfermagem, medicina, etc.)</option>
+          <option>Pregação / ensino</option>
+          <option>Trabalho com crianças</option>
+          <option>Fotografia / comunicação</option>
+          <option>Outro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="cad-visao">Sua visão sobre missões</label>
+        <textarea id="cad-visao" placeholder="Como você enxerga o trabalho missionário?" style="width:100%;padding:0.65rem 0.85rem;border:1.5px solid rgba(245,194,0,0.5);border-radius:4px;font-family:'Inter',sans-serif;font-size:0.93rem;resize:vertical;min-height:80px;outline:none;"></textarea>
+      </div>
+
+      <span class="form-section-label">Acesso à plataforma</span>
+      <div class="form-group">
         <label for="cad-email">E-mail</label>
-        <input type="email" id="cad-email" placeholder="seu@email.com" required>
+        <input type="email" id="cad-email" placeholder="seu@email.com">
       </div>
       <div class="form-group">
         <label for="cad-senha">Senha</label>
-        <input type="password" id="cad-senha" placeholder="Mínimo 6 caracteres" required>
+        <input type="password" id="cad-senha" placeholder="Mínimo 6 caracteres">
       </div>
-      <button class="form-submit" onclick="cadastrar()">Criar conta</button>
+      <button class="form-submit" onclick="cadastrar()">Criar minha conta</button>
       <div class="login-footer">
         Já tem conta? <a href="#" onclick="trocarAba('entrar')">Entrar</a>
+      </div>
+    </div>
+
+    <!-- RECUPERAR SENHA -->
+    <div class="login-form" id="form-recuperar">
+      <div class="erro-msg" id="erro-recuperar"></div>
+      <div class="sucesso-msg" id="sucesso-recuperar"></div>
+      <p style="font-size:0.9rem;color:var(--texto-suave);margin-bottom:1rem;">Digite seu e-mail e enviaremos um link para redefinir sua senha.</p>
+      <div class="form-group">
+        <label for="rec-email">E-mail</label>
+        <input type="email" id="rec-email" placeholder="seu@email.com">
+      </div>
+      <button class="form-submit" onclick="recuperarSenha()">Enviar link</button>
+      <div class="login-footer">
+        <a href="#" onclick="trocarAba('entrar')">Voltar para o login</a>
       </div>
     </div>
 
@@ -193,9 +175,8 @@
     document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('ativo'))
     document.querySelectorAll('.login-form').forEach(f => f.classList.remove('ativo'))
     document.getElementById('form-' + aba).classList.add('ativo')
-    const tabs = document.querySelectorAll('.login-tab')
-    if (aba === 'entrar') tabs[0].classList.add('ativo')
-    else tabs[1].classList.add('ativo')
+    if (aba === 'entrar') document.querySelectorAll('.login-tab')[0].classList.add('ativo')
+    else if (aba === 'cadastrar') document.querySelectorAll('.login-tab')[1].classList.add('ativo')
   }
 
   window.entrar = async function() {
@@ -205,25 +186,10 @@
     erroEl.style.display = 'none'
 
     const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha })
+    if (error) { erroEl.textContent = 'E-mail ou senha incorretos.'; erroEl.style.display = 'block'; return }
 
-    if (error) {
-      erroEl.textContent = 'E-mail ou senha incorretos.'
-      erroEl.style.display = 'block'
-      return
-    }
-
-    // Verificar se é admin
-    const { data: perfil } = await supabase
-      .from('perfis')
-      .select('is_admin')
-      .eq('id', data.user.id)
-      .single()
-
-    if (perfil?.is_admin) {
-      window.location.href = 'admin.html'
-    } else {
-      window.location.href = 'painel.html'
-    }
+    const { data: perfil } = await supabase.from('perfis').select('is_admin').eq('id', data.user.id).single()
+    window.location.href = perfil?.is_admin ? 'admin.html' : 'painel.html'
   }
 
   window.cadastrar = async function() {
@@ -232,46 +198,51 @@
     const senha = document.getElementById('cad-senha').value
     const telefone = document.getElementById('cad-telefone').value
     const cidade = document.getElementById('cad-cidade').value
+    const estado_civil = document.getElementById('cad-estado-civil').value
+    const cidade_igreja = document.getElementById('cad-igreja').value
+    const nome_pastor = document.getElementById('cad-pastor').value
+    const telefone_pastor = document.getElementById('cad-tel-pastor').value
+    const batizado = document.getElementById('cad-batizado').value === 'true'
+    const experiencia_missionaria = document.getElementById('cad-experiencia').value === 'true'
+    const habilidade = document.getElementById('cad-habilidade').value
+    const visao_missoes = document.getElementById('cad-visao').value
+
     const erroEl = document.getElementById('erro-cadastrar')
     const sucessoEl = document.getElementById('sucesso-cadastrar')
     erroEl.style.display = 'none'
     sucessoEl.style.display = 'none'
 
-    const { data, error } = await supabase.auth.signUp({ email, password: senha })
+    if (!nome || !email || !senha) { erroEl.textContent = 'Preencha nome, e-mail e senha.'; erroEl.style.display = 'block'; return }
 
-    if (error) {
-      erroEl.textContent = 'Erro ao criar conta: ' + error.message
-      erroEl.style.display = 'block'
-      return
-    }
+    const { data, error } = await supabase.auth.signUp({ email, password: senha })
+    if (error) { erroEl.textContent = 'Erro: ' + error.message; erroEl.style.display = 'block'; return }
 
     await supabase.from('perfis').insert({
       id: data.user.id,
-      nome, email, telefone, cidade
+      nome, email, telefone, cidade, estado_civil,
+      cidade_igreja, nome_pastor, telefone_pastor,
+      batizado, experiencia_missionaria, habilidade, visao_missoes
     })
 
-    sucessoEl.textContent = 'Conta criada! Verifique seu e-mail para confirmar o cadastro.'
+    sucessoEl.textContent = 'Conta criada com sucesso! Fazendo login...'
+    sucessoEl.style.display = 'block'
+
+    setTimeout(() => { window.location.href = 'painel.html' }, 1500)
+  }
+
+  window.recuperarSenha = async function() {
+    const email = document.getElementById('rec-email').value
+    const erroEl = document.getElementById('erro-recuperar')
+    const sucessoEl = document.getElementById('sucesso-recuperar')
+    erroEl.style.display = 'none'
+    sucessoEl.style.display = 'none'
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email)
+    if (error) { erroEl.textContent = 'Erro: ' + error.message; erroEl.style.display = 'block'; return }
+
+    sucessoEl.textContent = 'Link enviado! Verifique seu e-mail.'
     sucessoEl.style.display = 'block'
   }
-  window.recuperarSenha = async function() {
-  const email = document.getElementById('rec-email').value
-  const erroEl = document.getElementById('erro-recuperar')
-  const sucessoEl = document.getElementById('sucesso-recuperar')
-  erroEl.style.display = 'none'
-  sucessoEl.style.display = 'none'
-
-  const { error } = await supabase.auth.resetPasswordForEmail(email)
-
-  if (error) {
-    erroEl.textContent = 'Erro ao enviar e-mail: ' + error.message
-    erroEl.style.display = 'block'
-    return
-  }
-
-  sucessoEl.textContent = 'Link enviado! Verifique seu e-mail.'
-  sucessoEl.style.display = 'block'
-}
 </script>
-
 </body>
 </html>
