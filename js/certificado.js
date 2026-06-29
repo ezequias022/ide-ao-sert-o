@@ -72,7 +72,7 @@ const dataFormatada = `${dataInicio} e ${dataFim} de ${mes} de ${ano}`
   <line x1="752" y1="360" x2="758" y2="355" stroke="#3D6B28" stroke-width="1.5"/>
   <ellipse cx="746" cy="440" rx="20" ry="6" fill="#C4956A" opacity="0.5"/>
 
-  <text x="400" y="165" text-anchor="middle" font-family="Georgia, serif" font-size="15" fill="#5C3D2E">Certificamos que</text>
+  <text x="400" y="185" text-anchor="middle" font-family="Georgia, serif" font-size="15" fill="#5C3D2E">Certificamos que</text>
   <text x="400" y="210" text-anchor="middle" font-family="Georgia, serif" font-size="28" font-weight="700" fill="#3D2B1F">${perfil.nome}</text>
   <line x1="120" y1="220" x2="680" y2="220" stroke="#B5541A" stroke-width="1"/>
   <text x="400" y="258" text-anchor="middle" font-family="Georgia, serif" font-size="15" fill="#5C3D2E">participou como ${termo} no</text>
