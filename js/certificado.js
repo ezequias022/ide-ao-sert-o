@@ -41,7 +41,7 @@ const dataFormatada = `${dataInicio} e ${dataFim} de ${mes} de ${ano}`
   <rect x="12" y="12" width="776" height="72" fill="#3D2B1F" rx="5"/>
   <rect x="12" y="68" width="776" height="18" fill="#B5541A"/>
   <text x="400" y="40" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="700" fill="#FAF3E0" letter-spacing="4">MISSÃO IDE AO SERTÃO</text>
-  <text x="400" y="58" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#F5C200" letter-spacing="3">PROJETO MISSIONÁRIO EVANGELÍSTICO</text>
+  <text x="400" y="58" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#F5C200" letter-spacing="3">Eu Vou Pregar no Sertão</text>
   <text x="400" y="79" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#FAF3E0" letter-spacing="2">CERTIFICADO DE PARTICIPAÇÃO</text>
 <image href="${logoBase64}" x="360" y="88" width="80" height="80"/>
   <!-- Cactus esquerdo -->
