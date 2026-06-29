@@ -1,3 +1,4 @@
+import { logoBase64 } from './logo-base64.js'
 import { supabase } from './supabase.js'
 
 export async function gerarCertificadoPDF(usuarioId, eventoId) {
@@ -42,7 +43,7 @@ const dataFormatada = `${dataInicio} e ${dataFim} de ${mes} de ${ano}`
   <text x="400" y="40" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="700" fill="#FAF3E0" letter-spacing="4">MISSÃO IDE AO SERTÃO</text>
   <text x="400" y="58" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#F5C200" letter-spacing="3">PROJETO MISSIONÁRIO EVANGELÍSTICO</text>
   <text x="400" y="79" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#FAF3E0" letter-spacing="2">CERTIFICADO DE PARTICIPAÇÃO</text>
-<image href="https://wzhrxehtabfxuwlhqpis.supabase.co/storage/v1/object/public/assets/logo.png" x="340" y="90" width="80" height="80" clip-path="circle()"/>
+<image href="${logoBase64}" x="360" y="88" width="80" height="80"/>
   <!-- Cactus esquerdo -->
   <rect x="48" y="290" width="12" height="150" fill="#5A8A3C" rx="6"/>
   <rect x="28" y="370" width="22" height="9" fill="#5A8A3C" rx="4"/>
