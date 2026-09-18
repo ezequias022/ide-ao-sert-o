@@ -126,7 +126,8 @@
             <input type="date" id="ev-fim">
           </div>
         </div>
-        <button class="form-submit" style="width:auto;padding:0.7rem 2rem;" onclick="cadastrarEvento()">Cadastrar evento</button>
+        <input type="hidden" id="ev-editando-id" value="">
+<button class="form-submit" style="width:auto;padding:0.7rem 2rem;" onclick="cadastrarEvento()">Cadastrar evento</button>
       </div>
 
       <div style="overflow-x:auto;">
@@ -209,7 +210,7 @@ console.log('inscricoes:', data, 'erro:', error)
       </tr>`).join('')
   }
 
-  async function carregarEventos() {
+ async function carregarEventos() {
     const { data } = await supabase.from('eventos').select('*').order('data_inicio', { ascending: false })
     document.getElementById('total-eventos').textContent = data?.length || 0
 
@@ -227,9 +228,22 @@ console.log('inscricoes:', data, 'erro:', error)
         <td>${new Date(e.data_fim + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
         <td><span class="status-badge ${e.ativo ? 'status-aprovado' : 'status-rejeitado'}">${e.ativo ? 'Ativo' : 'Encerrado'}</span></td>
         <td>
+          <button class="btn-certificado-gerar" onclick='editarEvento(${JSON.stringify(e).replace(/'/g, "&apos;")})'>Editar</button>
           <button class="btn-rejeitar" onclick="encerrarEvento('${e.id}', ${e.ativo})">${e.ativo ? 'Encerrar' : 'Reativar'}</button>
         </td>
       </tr>`).join('')
+  }
+
+  window.editarEvento = function(evento) {
+    document.getElementById('ev-nome').value = evento.nome
+    document.getElementById('ev-descricao').value = evento.descricao || ''
+    document.getElementById('ev-local').value = evento.local
+    document.getElementById('ev-inicio').value = evento.data_inicio
+    document.getElementById('ev-fim').value = evento.data_fim
+    document.getElementById('ev-editando-id').value = evento.id
+    document.querySelector('.form-evento p.section-label').textContent = 'Editando evento'
+    document.querySelector('.form-evento button').textContent = 'Salvar alterações'
+    document.querySelector('.form-evento').scrollIntoView({ behavior: 'smooth' })
   }
 
   window.atualizarStatus = async function(id, status) {
@@ -270,11 +284,26 @@ console.log('inscricoes:', data, 'erro:', error)
     const local = document.getElementById('ev-local').value
     const data_inicio = document.getElementById('ev-inicio').value
     const data_fim = document.getElementById('ev-fim').value
+    const editandoId = document.getElementById('ev-editando-id').value
 
     if (!nome || !local || !data_inicio || !data_fim) { alert('Preencha todos os campos obrigatórios.'); return }
 
-    await supabase.from('eventos').insert({ nome, descricao, local, data_inicio, data_fim, ativo: true })
-    alert('Evento cadastrado!')
+    if (editandoId) {
+      await supabase.from('eventos').update({ nome, descricao, local, data_inicio, data_fim }).eq('id', editandoId)
+      alert('Evento atualizado!')
+      document.getElementById('ev-editando-id').value = ''
+      document.querySelector('.form-evento p.section-label').textContent = 'Cadastrar novo evento'
+      document.querySelector('.form-evento button').textContent = 'Cadastrar evento'
+      document.getElementById('ev-nome').value = ''
+      document.getElementById('ev-descricao').value = ''
+      document.getElementById('ev-local').value = ''
+      document.getElementById('ev-inicio').value = ''
+      document.getElementById('ev-fim').value = ''
+    } else {
+      await supabase.from('eventos').insert({ nome, descricao, local, data_inicio, data_fim, ativo: true })
+      alert('Evento cadastrado!')
+    }
+
     carregarEventos()
   }
 
