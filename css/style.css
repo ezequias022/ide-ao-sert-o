@@ -318,6 +318,7 @@ section { padding: 5rem 2rem; }
   font-weight: 700;
   color: var(--texto);
   margin-bottom: 1rem;
+  text-align: center;
 }
 
 .evento-detalhe {
