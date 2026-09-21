@@ -140,14 +140,17 @@
       <div style="overflow-x:auto;">
         <table class="tabela">
           <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Local</th>
-              <th>Data início</th>
-              <th>Data fim</th>
-              <th>Status</th>
-              <th>Ações</th>
-            </tr>
+           <tr>
+  <th>Nome</th>
+  <th>E-mail</th>
+  <th>WhatsApp</th>
+  <th>Cidade</th>
+  <th>Evento</th>
+  <th>Habilidade</th>
+  <th>Participações</th>
+  <th>Status</th>
+  <th>Ações</th>
+</tr>
           </thead>
           <tbody id="tabela-eventos">
             <tr><td colspan="6" class="vazio">Carregando...</td></tr>
@@ -218,11 +221,13 @@ async function carregarInscricoes() {
 
     const tbody = document.getElementById('tabela-inscricoes')
     if (!data || data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" class="vazio">Nenhuma inscrição neste filtro.</td></tr>'
+     tbody.innerHTML = '<tr><td colspan="9" class="vazio">Nenhuma inscrição neste filtro.</td></tr>'
       return
     }
 
-    tbody.innerHTML = data.map(i => `
+   tbody.innerHTML = data.map(i => {
+      const totalParticipacoes = todasInscricoes.filter(x => x.usuario_id === i.usuario_id && x.status === 'aprovado').length
+      return `
       <tr>
         <td>${i.perfis?.nome || '--'}</td>
         <td>${i.perfis?.email || '--'}</td>
@@ -230,6 +235,7 @@ async function carregarInscricoes() {
         <td>${i.perfis?.cidade || '--'}</td>
         <td>${i.eventos?.nome || '--'}</td>
         <td>${i.perfis?.habilidade || '--'}</td>
+        <td>${totalParticipacoes}ª vez</td>
         <td><span class="status-badge status-${i.status}">${i.status}</span></td>
         <td>
           ${i.status === 'pendente' ? `
@@ -239,8 +245,9 @@ async function carregarInscricoes() {
           ${i.status === 'aprovado' ? `
             <button class="btn-certificado-gerar" onclick="gerarCertificado('${i.id}', '${i.usuario_id}', '${i.evento_id}')">Emitir cert.</button>
           ` : ''}
-        </td>
-      </tr>`).join('')
+               </td>
+      </tr>`
+    }).join('')
   }
 
   window.exportarExcel = function() {
