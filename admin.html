@@ -40,6 +40,7 @@
     .vazio { text-align: center; padding: 2rem; color: var(--texto-suave); }
     @media (max-width: 768px) { .admin-cards { grid-template-columns: 1fr 1fr; } .tabela { font-size: 0.8rem; } .tabela th, .tabela td { padding: 0.6rem 0.5rem; } }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -72,10 +73,16 @@
     </div>
 
     <!-- INSCRIÇÕES -->
-    <div class="admin-secao">
-      <div class="admin-secao-header">
-        <h2>Inscrições</h2>
-      </div>
+<div class="admin-secao">
+  <div class="admin-secao-header">
+    <h2>Inscrições</h2>
+    <div style="display:flex;gap:0.8rem;align-items:center;">
+      <select id="filtro-evento" onchange="filtrarPorEvento()" style="padding:0.5rem 0.8rem;border:1.5px solid var(--amarelo);border-radius:4px;font-family:'Inter',sans-serif;font-size:0.85rem;">
+        <option value="todos">Todos os eventos</option>
+      </select>
+      <button class="btn-certificado-gerar" onclick="exportarExcel()">Exportar Excel</button>
+    </div>
+  </div>
       <div style="overflow-x:auto;">
         <table class="tabela">
           <thead>
@@ -167,14 +174,40 @@
     carregarEventos()
   }
 
-  async function carregarInscricoes() {
+  let todasInscricoes = []
+
+async function carregarInscricoes() {
     const { data, error } = await supabase
-  .from('inscricoes')
-  .select('*, perfis(nome, email, telefone, cidade, habilidade, genero, idade, estado_civil), eventos(nome)')
-  .order('created_at', { ascending: false })
+      .from('inscricoes')
+      .select('*, perfis(nome, email, telefone, cidade, habilidade, genero, idade, estado_civil, cidade_igreja, nome_pastor, telefone_pastor, batizado, experiencia_missionaria, visao_missoes), eventos(id, nome)')
+      .order('created_at', { ascending: false })
 
-console.log('inscricoes:', data, 'erro:', error)
+    todasInscricoes = data || []
+    popularFiltroEventos(todasInscricoes)
+    renderizarInscricoes(todasInscricoes)
+  }
 
+  function popularFiltroEventos(data) {
+    const select = document.getElementById('filtro-evento')
+    const eventosUnicos = {}
+    data.forEach(i => {
+      if (i.eventos) eventosUnicos[i.eventos.id] = i.eventos.nome
+    })
+    const valorAtual = select.value
+    select.innerHTML = '<option value="todos">Todos os eventos</option>'
+    Object.entries(eventosUnicos).forEach(([id, nome]) => {
+      select.innerHTML += `<option value="${id}">${nome}</option>`
+    })
+    select.value = valorAtual || 'todos'
+  }
+
+  window.filtrarPorEvento = function() {
+    const eventoId = document.getElementById('filtro-evento').value
+    const filtradas = eventoId === 'todos' ? todasInscricoes : todasInscricoes.filter(i => i.evento_id === eventoId)
+    renderizarInscricoes(filtradas)
+  }
+
+  function renderizarInscricoes(data) {
     const total = data?.length || 0
     const pendentes = data?.filter(i => i.status === 'pendente').length || 0
     const aprovados = data?.filter(i => i.status === 'aprovado').length || 0
@@ -185,7 +218,7 @@ console.log('inscricoes:', data, 'erro:', error)
 
     const tbody = document.getElementById('tabela-inscricoes')
     if (!data || data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" class="vazio">Nenhuma inscrição ainda.</td></tr>'
+      tbody.innerHTML = '<tr><td colspan="8" class="vazio">Nenhuma inscrição neste filtro.</td></tr>'
       return
     }
 
@@ -196,7 +229,7 @@ console.log('inscricoes:', data, 'erro:', error)
         <td>${i.perfis?.telefone || '--'}</td>
         <td>${i.perfis?.cidade || '--'}</td>
         <td>${i.eventos?.nome || '--'}</td>
-       <td>${i.perfis?.habilidade || '--'}</td>
+        <td>${i.perfis?.habilidade || '--'}</td>
         <td><span class="status-badge status-${i.status}">${i.status}</span></td>
         <td>
           ${i.status === 'pendente' ? `
@@ -208,6 +241,40 @@ console.log('inscricoes:', data, 'erro:', error)
           ` : ''}
         </td>
       </tr>`).join('')
+  }
+
+  window.exportarExcel = function() {
+    const eventoId = document.getElementById('filtro-evento').value
+    const dados = eventoId === 'todos' ? todasInscricoes : todasInscricoes.filter(i => i.evento_id === eventoId)
+
+    if (dados.length === 0) { alert('Nenhuma inscrição para exportar.'); return }
+
+    const linhas = dados.map(i => ({
+      'Nome': i.perfis?.nome || '',
+      'E-mail': i.perfis?.email || '',
+      'WhatsApp': i.perfis?.telefone || '',
+      'Idade': i.perfis?.idade || '',
+      'Gênero': i.perfis?.genero || '',
+      'Estado civil': i.perfis?.estado_civil || '',
+      'Cidade': i.perfis?.cidade || '',
+      'Igreja': i.perfis?.cidade_igreja || '',
+      'Nome do pastor': i.perfis?.nome_pastor || '',
+      'Telefone do pastor': i.perfis?.telefone_pastor || '',
+      'Batizado': i.perfis?.batizado ? 'Sim' : 'Não',
+      'Já foi missionário': i.perfis?.experiencia_missionaria ? 'Sim' : 'Não',
+      'Habilidade': i.perfis?.habilidade || '',
+      'Visão sobre missões': i.perfis?.visao_missoes || '',
+      'Evento': i.eventos?.nome || '',
+      'Status': i.status,
+      'Data de inscrição': new Date(i.created_at).toLocaleDateString('pt-BR')
+    }))
+
+    const worksheet = XLSX.utils.json_to_sheet(linhas)
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Inscrições')
+
+    const nomeArquivo = eventoId === 'todos' ? 'inscricoes_todos_eventos.xlsx' : `inscricoes_${dados[0].eventos?.nome || 'evento'}.xlsx`
+    XLSX.writeFile(workbook, nomeArquivo)
   }
 
  async function carregarEventos() {
